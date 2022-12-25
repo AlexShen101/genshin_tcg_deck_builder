@@ -1,6 +1,4 @@
 const express = require("express");
- 
-
 const artifactCardRoutes = express.Router();
  
 // This will help us connect to the database

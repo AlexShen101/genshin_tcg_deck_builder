@@ -3,6 +3,10 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 require("dotenv").config({ path: "./config.env" });
+
+// get driver connection
+const dbo = require("./db/conn.js");
+
 const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
@@ -16,9 +20,6 @@ app.use(require("./routes/summons.js"));
 app.use(require("./routes/supportCards.js"));
 app.use(require("./routes/talentCards.js"));
 app.use(require("./routes/weaponCards.js"));
-
-// get driver connection
-const dbo = require("./db/conn.js");
  
 app.listen(port, () => {
   // perform a database connection when server starts

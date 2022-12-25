@@ -4,10 +4,12 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 // We import all the components we need in our app
-import Navbar from './components/navbar'
-import CardListPage from './components/cardListPage'
-import Edit from './components/editDeck'
-import Create from './components/createDeck'
+import Navbar from './components/Navbar'
+import CardListPage from './components/CardListPage'
+import EditDeckPage from './components/EditDeckPage'
+import CreateDeckPage from './components/CreateDeckPage'
+import ViewCardPage from './components/ViewCardPage'
+import PageNotFound from './components/PageNotFound'
 
 const App = () => {
     return (
@@ -15,8 +17,13 @@ const App = () => {
             <Navbar />
             <Routes>
                 <Route exact path="/" element={<CardListPage />} />
-                <Route path="/edit/:id" element={<Edit />} />
-                <Route path="/create" element={<Create />} />
+                <Route path="/edit_deck/:id" element={<EditDeckPage />} />
+                <Route path="/create_deck" element={<CreateDeckPage />} />
+                <Route
+                    path="/view_card/:cardType/:id"
+                    element={<ViewCardPage />}
+                />
+                <Route path="*" element={<PageNotFound />}></Route>
             </Routes>
         </div>
     )

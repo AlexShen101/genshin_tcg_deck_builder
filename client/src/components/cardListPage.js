@@ -1,56 +1,84 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { storage } from '../firebase/FirebaseSetup'
+import { ref, getDownloadURL } from 'firebase/storage'
 
-const Card = (props) => (
-    <tr>
-        <td>{props.card.name}</td>
-        <td>{props.card.cost}</td>
-    </tr>
-)
+const mapCardToImageFolder = {
+    characterCards: 'characters',
+    artifactCards: 'weapons_artifacts',
+    eventCards: 'event',
+    supportCards: 'support',
+    talentCards: 'talents',
+    weaponCards: 'weapons_artifacts',
+}
+
+// backend URLs to call get requests on
+const cardsToFetch = [
+    'characterCards',
+    'artifactCards',
+    'eventCards',
+    'supportCards',
+    'talentCards',
+    'weaponCards',
+]
+
+// takes in an image_type
+const queryImage = (image_type, image_id, my_callback) => {
+    const pathReference = ref(
+        storage,
+        image_type + '/' + image_id + '/' + image_id + '.png'
+    )
+    // var storageRef = firebase.storage().ref()
+    getDownloadURL(pathReference)
+        .then((url) => {
+            my_callback(url)
+            // document.querySelector('img').src = test;
+        })
+        .catch((error) => {
+            console.log(error)
+            my_callback(undefined)
+        })
+}
+
+const Card = (props) => {
+    const [imageUrl, setImageUrl] = useState()
+
+    useEffect(() => {
+        let imageFolder = mapCardToImageFolder[props.cardType]
+        queryImage(imageFolder, props.card.image_id, setImageUrl)
+    }, [])
+
+    return (
+        <div>
+            <img
+                src={imageUrl}
+                alt={props.card.name + props.card.image_id}
+            ></img>
+            <p>{props.card.name}</p>
+        </div>
+    )
+}
 
 // handles rendering and functions for the card displayer
-export default function cardListPage() {
+const CardListPage = () => {
     const [cards, setCards] = useState([])
-    const [typeFilter, setTypeFilter] = useState("artifactCards")
-    const [search, setSearch] = useState("")
-    // console.log("cards")
-    // console.log(cards)
-    // console.log("typeFilter")
-    // console.log(typeFilter)
+    const [typeFilter, setTypeFilter] = useState('artifactCards')
+    const [search, setSearch] = useState('')
+
     // This method fetches the relevant card types from the database.
     useEffect(() => {
         // card should either be "" or one of the elements in cardsToFetch
         async function getCards(cardType) {
-            console.log("cardtype:" + cardType)
+            console.log('cardtype:' + cardType)
             let allCards = []
-            const cardsToFetch = [
-                'characterCards',
-                'artifactCards',
-                'eventCards',
-                'supportCards',
-                'statuses',
-                'summons',
-                'talentCards',
-                'weaponCards',
-            ]
 
-            if (cardType == '') {
-                for (let i = 0; i < cardsToFetch.length; i++) {
-                    const fetchUrl = `http://localhost:5000/${cardsToFetch[i]}`
-                    const response = await fetch(fetchUrl)
-                    if (!response.ok) {
-                        const message = `An error occurred: ${response.statusText}`
-                        console.log(message)
-                        window.alert(message)
-                        return
-                    }
-                    const outputCards = await response.json()
-                    allCards = allCards.concat(outputCards)
-                }
-                setCards(allCards)
-            }
-            else {
-                console.log("here")
+            if (!cardsToFetch.includes(cardType)) {
+                console.log(
+                    'cardtype: ' +
+                    cardType +
+                    ' should be invalid, check for bug'
+                )
+            } else {
                 const fetchUrl = `http://localhost:5000/${cardType}`
                 const response = await fetch(fetchUrl)
                 if (!response.ok) {
@@ -59,35 +87,28 @@ export default function cardListPage() {
                     window.alert(message)
                     return
                 }
-                const outputCards = await response.json()
+                let outputCards = await response.json()
+                outputCards = outputCards.filter((item) => {
+                    if (
+                        item.name.toLowerCase().includes(search.toLowerCase())
+                    ) {
+                        return item
+                    }
+                })
                 setCards(outputCards)
             }
         }
         getCards(typeFilter)
         return
-    }, [typeFilter])
+    }, [typeFilter, search])
 
-    const makeCardView = () => {
-        return (
-            <table className="table table-striped" style={{ marginTop: 20 }}>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Cost</th>
-                    </tr>
-                </thead>
-                <tbody>{makeCardList()}</tbody>
-            </table>
-        )
-    }
     // This method will map out the cards on the table
     function makeCardList() {
         return cards.map((card) => {
             return (
-                <Card
-                    card={card}
-                    key={card._id}
-                />
+                <Link to={`/view_card/${typeFilter}/${card._id}`}>
+                    <Card card={card} key={card._id} cardType={typeFilter} />
+                </Link>
             )
         })
     }
@@ -97,17 +118,30 @@ export default function cardListPage() {
         <div>
             <h3>Card List</h3>
             <div>
-                <input type="string" name="filter_card_input"></input>
-                <button name="artifact_button" onClick={() => setTypeFilter("artifactCards")}>Artifacts</button>
-                <button name="character_button" onClick={() => setTypeFilter("characterCards")}>Characters</button>
-                <button name="event_button" onClick={() => setTypeFilter("eventCards")}>Events</button>
-                <button name="status_button" onClick={() => setTypeFilter("statuses")}>Statuses</button>
-                <button name="summon_button" onClick={() => setTypeFilter("summons")}>Summons</button>
-                <button name="support_button" onClick={() => setTypeFilter("supportCards")}>Support</button>
-                <button name="talent_button" onClick={() => setTypeFilter("talentCards")}>Talents</button>
-                <button name="weapon_button" onClick={() => setTypeFilter("weaponCards")}>Weapons</button>
+                <input
+                    type="string"
+                    name="filter_card_input"
+                    value={search}
+                    onChange={(event) => setSearch(event.target.value)}
+                ></input>
+                {cardsToFetch.map((item) => {
+                    return (
+                        <button
+                            name={`${item}_button`}
+                            onClick={() => {
+                                setTypeFilter(item)
+                                setSearch('')
+                            }}
+                            key={`${item}_button`}
+                        >
+                            {item.replace('Cards', ' cards')}
+                        </button>
+                    )
+                })}
             </div>
-            {makeCardView()}
+            {makeCardList()}
         </div>
     )
 }
+
+export default CardListPage
