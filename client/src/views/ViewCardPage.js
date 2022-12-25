@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { storage } from '../firebase/FirebaseSetup'
-import { ref, getDownloadURL } from 'firebase/storage'
-
-import { Link } from 'react-router-dom'
+import queryImage from '../firebase/FirebaseQueryImage'
 
 const mapCardToImageFolder = {
     characterCards: 'characters',
@@ -15,30 +12,11 @@ const mapCardToImageFolder = {
     weaponCards: 'weapons_artifacts',
 }
 
-// takes in an image_type
-const queryImage = (image_type, image_id, my_callback) => {
-    const pathReference = ref(
-        storage,
-        image_type + '/' + image_id + '/' + image_id + '.png'
-    )
-    // var storageRef = firebase.storage().ref()
-    getDownloadURL(pathReference)
-        .then((url) => {
-            my_callback(url)
-            // document.querySelector('img').src = test;
-        })
-        .catch((error) => {
-            console.log(error)
-            my_callback(undefined)
-        })
-}
-
 // handles rendering and functions for the card displayer
 const viewCardPage = (props) => {
     const [card, setCard] = useState()
     const [imageUrl, setImageUrl] = useState()
 
-    console.log(card)
     // This method fetches the relevant card types from the database.
     useEffect(() => {
         // card should either be "" or one of the elements in cardsToFetch
@@ -48,7 +26,6 @@ const viewCardPage = (props) => {
             const response = await fetch(fetchUrl)
             if (!response.ok) {
                 const message = `An error occurred: ${response.statusText}`
-                console.log(message)
                 window.alert(message)
                 return
             }

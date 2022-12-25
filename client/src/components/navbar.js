@@ -16,7 +16,7 @@ const links = [
         label: 'My Deck',
     },
     {
-        to: '/',
+        to: '/view_all_cards',
         label: 'All Cards',
     },
 ]
