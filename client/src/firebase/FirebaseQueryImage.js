@@ -2,10 +2,7 @@ import { storage } from './FirebaseSetup'
 import { ref, getDownloadURL } from 'firebase/storage'
 
 const queryImage = (firebasePath, my_callback) => {
-    const pathReference = ref(
-        storage,
-        firebasePath
-    )
+    const pathReference = ref(storage, firebasePath)
     // var storageRef = firebase.storage().ref()
     getDownloadURL(pathReference)
         .then((url) => {

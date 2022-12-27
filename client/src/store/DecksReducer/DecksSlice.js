@@ -4,9 +4,7 @@ import { getDecks, getDeck, addDeck, deleteDeck, updateDeck } from './DeckThunk'
 const decksSlice = createSlice({
     name: 'decks',
     initialState: [],
-    reducers: {
-
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(getDecks.fulfilled, (state, action) => {
@@ -33,15 +31,14 @@ const decksSlice = createSlice({
             .addMatcher(
                 // if the action name ends with rejected, perform the following function
                 (action) => {
-                    if (action.type)
-                        return action.type.endsWith('rejected')
+                    if (action.type) return action.type.endsWith('rejected')
                 },
                 (state, action) => {
-                    console.log(action.type + " was rejected")
+                    console.log(action.type + ' was rejected')
                     console.log(action)
                 }
             )
-    }
+    },
 })
 
-export default decksSlice.reducer;
+export default decksSlice.reducer

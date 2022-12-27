@@ -22,7 +22,11 @@ const App = () => {
         <BrowserRouter>
             <Navbar />
             <Routes>
-                <Route exact path="/view_all_cards" element={<ViewAllCardsPage />} />
+                <Route
+                    exact
+                    path="/view_all_cards"
+                    element={<ViewAllCardsPage />}
+                />
                 {/* <Route path="/edit_deck/:id" element={<EditDeckPage />} /> */}
                 <Route path="/create_deck" element={<CreateDeckPage />} />
                 <Route

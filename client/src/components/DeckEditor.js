@@ -13,7 +13,10 @@ const DeckEditor = (props) => {
     let deck = useSelector((state) => {
         return state.currentDeck
     })
-    window.localStorage.setItem('deck', typeof (deck) == 'object' ? JSON.stringify(deck) : deck);
+    window.localStorage.setItem(
+        'deck',
+        typeof deck == 'object' ? JSON.stringify(deck) : deck
+    )
 
     const dispatch = useDispatch()
     // add a given card to the deck or throw an alert otherwise
@@ -21,16 +24,17 @@ const DeckEditor = (props) => {
         // spreading is just used to clone the deck
         let newDeck = { ...deck }
 
-        if (card.cardType === "character") {
+        if (card.cardType === 'character') {
             // TODO: reason why I'm only spreading characterCards vs the entire deck is that spreading the deck still keeps characterCards immutable
             let characterCards = [...newDeck.characterCards]
             // requirements: no duplicates and can't have more than 3 characters
             if (characterCards.length === 3) return
-            else if (characterCards.find(item => item.name === card.name)) return
+            else if (characterCards.find((item) => item.name === card.name))
+                return
             else characterCards.push(card)
             newDeck = {
                 ...newDeck,
-                characterCards: characterCards
+                characterCards: characterCards,
             }
         } else {
             let actionCards = [...newDeck.actionCards]
@@ -54,7 +58,7 @@ const DeckEditor = (props) => {
             newDeck = {
                 ...newDeck,
                 actionCards: actionCards,
-                length: (deck.length + 1)
+                length: deck.length + 1,
             }
         }
         dispatch(setCurrentDeck(newDeck))
@@ -64,10 +68,10 @@ const DeckEditor = (props) => {
         let newDeck = {
             ...deck,
             characterCards: [...deck.characterCards],
-            actionCards: [...deck.actionCards]
+            actionCards: [...deck.actionCards],
         } // spreading is just used to clone the deck
 
-        if (card.cardType === "character") {
+        if (card.cardType === 'character') {
             for (let i = 0; i < newDeck.characterCards.length; i++) {
                 if (newDeck.characterCards[i].name === card.name) {
                     newDeck.characterCards.splice(i, 1)
@@ -96,20 +100,28 @@ const DeckEditor = (props) => {
             {/* This div takes left hand column */}
             <div>
                 <h3>My Deck</h3>
-                <form onSubmit={(e) => {
-                    e.preventDefault()
-                    props.submitDeck(deck)
-                }}>
-                    <input name="deck_name"
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        props.submitDeck(deck)
+                    }}
+                >
+                    <input
+                        name="deck_name"
                         onChange={(e) => {
                             let newDeck = { ...deck, deckName: e.target.value }
                             dispatch(setCurrentDeck(newDeck))
                         }}
-                        value={deck.deckName}></input>
-                    <button onClick={(e) => {
-                        e.preventDefault()
-                        props.submitDeck(deck)
-                    }}>Save</button>
+                        value={deck.deckName}
+                    ></input>
+                    <button
+                        onClick={(e) => {
+                            e.preventDefault()
+                            props.submitDeck(deck)
+                        }}
+                    >
+                        Save
+                    </button>
                 </form>
                 <p>Character Cards</p>
                 {deck.characterCards.map((card) => {
@@ -119,8 +131,10 @@ const DeckEditor = (props) => {
                             <p key={`${card.name}_text`}>{card.name}</p>
                             <button
                                 key={`${card.name}_button`}
-                                onClick={() => removeCardFromDeck(card)}>
-                                Remove</button>
+                                onClick={() => removeCardFromDeck(card)}
+                            >
+                                Remove
+                            </button>
                         </div>
                     )
                 })}
@@ -129,11 +143,15 @@ const DeckEditor = (props) => {
                     return (
                         // <Card key={card.id} card={card} />
                         <div key={`${card.name}_div`}>
-                            <p key={`${card.name}_text`}>{card.name} x {card.count}</p>
+                            <p key={`${card.name}_text`}>
+                                {card.name} x {card.count}
+                            </p>
                             <button
                                 key={`${card.name}_button`}
-                                onClick={() => removeCardFromDeck(card)}>
-                                Remove</button>
+                                onClick={() => removeCardFromDeck(card)}
+                            >
+                                Remove
+                            </button>
                         </div>
                     )
                 })}
@@ -142,7 +160,7 @@ const DeckEditor = (props) => {
             <div>
                 <CardList onClickAction={addCardToDeck} />
             </div>
-        </div >
+        </div>
     )
 }
 

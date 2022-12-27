@@ -28,7 +28,6 @@ const CardList = (props) => {
     const [typeFilter, setTypeFilter] = useState('artifactCards')
     const [search, setSearch] = useState('')
 
-
     // This method fetches the relevant card types from the database.
     useEffect(() => {
         // card should either be "" or one of the elements in cardsToFetch
@@ -39,8 +38,8 @@ const CardList = (props) => {
             if (!cardsToFetch.includes(cardType)) {
                 console.log(
                     'cardtype: ' +
-                    cardType +
-                    ' should be invalid, check for bug'
+                        cardType +
+                        ' should be invalid, check for bug'
                 )
             } else {
                 const fetchUrl = `http://localhost:5000/${cardType}`
@@ -55,7 +54,7 @@ const CardList = (props) => {
                     return {
                         ...card,
                         firebasePath: `/${mapCardToImageFolder[typeFilter]}/${card.image_id}/${card.image_id}.png`,
-                        cardType: typeFilter.replace('Cards', '')
+                        cardType: typeFilter.replace('Cards', ''),
                     }
                 })
                 outputCards = outputCards.filter((item) => {
@@ -79,7 +78,8 @@ const CardList = (props) => {
                 return (
                     <button
                         onClick={() => onClickAction(card)}
-                        key={`card_button_wrapper_${card._id}`}>
+                        key={`card_button_wrapper_${card._id}`}
+                    >
                         <Card card={card} />
                     </button>
                 )
@@ -93,7 +93,6 @@ const CardList = (props) => {
                     </Link>
                 )
             }
-
         })
     }
 

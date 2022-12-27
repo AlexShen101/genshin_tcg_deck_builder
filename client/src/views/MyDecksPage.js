@@ -14,18 +14,26 @@ const MyDecksPage = () => {
         // open the edit deck page
         // set current deck to the given deck
         let deck = decks.find((deck) => deck._id === id)
-
     }
 
     const makeDeckList = () => {
         return decks.map((deck) => {
             return (
                 <tr key={`${deck._id}`}>
-                    <th>{deck.deckName}<button onClick={() => editDeck(deck._id)}> Edit Deck</button>
-                        <button onClick={() => dispatch(deleteDeck(deck._id))}> Delete Deck</button></th>
+                    <th>
+                        {deck.deckName}
+                        <button onClick={() => editDeck(deck._id)}>
+                            {' '}
+                            Edit Deck
+                        </button>
+                        <button onClick={() => dispatch(deleteDeck(deck._id))}>
+                            {' '}
+                            Delete Deck
+                        </button>
+                    </th>
                     <th>
                         {deck.characterCards.map((card) => {
-                            return card.name + " "
+                            return card.name + ' '
                         })}
                     </th>
                 </tr>
@@ -44,9 +52,7 @@ const MyDecksPage = () => {
                         <th>Characters</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {makeDeckList()}
-                </tbody>
+                <tbody>{makeDeckList()}</tbody>
             </table>
         </div>
     )

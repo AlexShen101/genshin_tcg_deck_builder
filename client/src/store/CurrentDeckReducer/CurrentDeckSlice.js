@@ -1,18 +1,18 @@
 import { createSlice, current } from '@reduxjs/toolkit'
 
-console.log("loading currentDeckSlice")
+console.log('loading currentDeckSlice')
 
 const initialState = {
-    deckName: "",
+    deckName: '',
     characterCards: [],
     actionCards: [],
-    length: 0
+    length: 0,
 }
 
 const getInitialState = () => {
     let localDeck = window.localStorage.getItem('deck')
     console.log(localDeck)
-    console.log(typeof (localDeck))
+    console.log(typeof localDeck)
     let result = localDeck != 'null' && localDeck != null
     console.log(result)
     if (result) return JSON.parse(localDeck)
@@ -27,9 +27,9 @@ const currentDeckSlice = createSlice({
                 return initialState
             }
             return action.payload
-        }
-    }
+        },
+    },
 })
 
 export const { setCurrentDeck } = currentDeckSlice.actions
-export default currentDeckSlice.reducer;
+export default currentDeckSlice.reducer
