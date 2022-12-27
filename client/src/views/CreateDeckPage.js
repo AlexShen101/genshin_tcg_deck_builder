@@ -1,48 +1,73 @@
 import React, { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router'
 import CardList from '../components/CardList'
+import { useSelector, useDispatch } from 'react-redux'
+
 import Card from '../components/Card'
 
-/*
-  This component is used to display a deck of cards
-  A deck requires 3 character cards and support carts
-deck = {
-    "characterCards": [],
-    "actionCards": []
-}
-*/
-const CreateDeckPage = () => {
-    console.log('rerender')
-    const [deck, setDeck] = useState({ characterCards: [], actionCards: [] })
+import { setCurrentDeck } from '../store/CurrentDeckReducer/CurrentDeckSlice'
+import { addDeck } from '../store/DecksReducer/DeckThunk'
 
-    const navigate = useNavigate()
+// See CurrentDeckSlice for the deck state structure
+const CreateDeckPage = () => {
+    console.log("rendering page")
+    let deck = useSelector((state) => {
+        return state.currentDeck
+    })
+    window.localStorage.setItem('deck', typeof (deck) == 'object' ? JSON.stringify(deck) : deck);
+
+    const dispatch = useDispatch()
     // add a given card to the deck or throw an alert otherwise
     const addCardToDeck = (card) => {
-        let newDeck = { ...deck } // spreading is just used to clone the deck
+        // spreading is just used to clone the deck
+        let newDeck = { ...deck }
+
         if (card.cardType === "character") {
+            // TODO: reason why I'm only spreading characterCards vs the entire deck is that spreading the deck still keeps characterCards immutable
+            let characterCards = [...newDeck.characterCards]
             // requirements: no duplicates and can't have more than 3 characters
-            if (newDeck.characterCards.length === 3) return
-            else if (newDeck.characterCards.find(item => item.name === card.name)) return
-            else newDeck.characterCards.push(card)
+            if (characterCards.length === 3) return
+            else if (characterCards.find(item => item.name === card.name)) return
+            else characterCards.push(card)
+            newDeck = {
+                ...newDeck,
+                characterCards: characterCards
+            }
         } else {
+            let actionCards = [...newDeck.actionCards]
             // requirements: max of 2 cards per action card. can't have more than 30 cards
-            // check if card is already in action card
-            const found = newDeck.actionCards.find((elem) => {
-                return elem.name === card.name
-            })
-            console.log(found)
-            if (newDeck.actionCards.length === 30) return
-            // check if action card is already in deck and there are 2 cards
-            else if (found && found.count === 2) return
-            // else add 1 to the count
-            else if (found) found.count = 2
-            else newDeck.actionCards.push({ ...card, count: 1 })
+            if (newDeck.length === 30) {
+                return
+            }
+            let cardInDeck = false
+            for (let i = 0; i < actionCards.length; i++) {
+                // check if new card is already in deck
+                if (actionCards[i].name === card.name) {
+                    cardInDeck = true
+                    if (actionCards[i].count === 2) return
+                    else {
+                        let newCard = { ...actionCards[i], count: 2 }
+                        actionCards[i] = newCard
+                    }
+                }
+            }
+            if (!cardInDeck) actionCards.push({ ...card, count: 1 })
+            newDeck = {
+                ...newDeck,
+                actionCards: actionCards,
+                length: (deck.length + 1)
+            }
         }
-        setDeck(newDeck)
+        dispatch(setCurrentDeck(newDeck))
     }
 
     const removeCardFromDeck = (card) => {
-        let newDeck = { ...deck } // spreading is just used to clone the deck
+        let newDeck = {
+            ...deck,
+            characterCards: [...deck.characterCards],
+            actionCards: [...deck.actionCards]
+        } // spreading is just used to clone the deck
+
         if (card.cardType === "character") {
             for (let i = 0; i < newDeck.characterCards.length; i++) {
                 if (newDeck.characterCards[i].name === card.name) {
@@ -55,33 +80,34 @@ const CreateDeckPage = () => {
                     if (newDeck.actionCards[i].count === 1) {
                         newDeck.actionCards.splice(i, 1)
                     } else {
-                        newDeck.actionCards[i].count = 1
+                        let cardCopy = { ...newDeck.actionCards[i] }
+                        cardCopy.count = 1
+                        newDeck.actionCards[i] = cardCopy
                     }
+                    newDeck.length -= 1
                 }
             }
         }
-        setDeck(newDeck)
+        dispatch(setCurrentDeck(newDeck))
     }
 
-    // This function will handle the submission.
-    async function onSubmit(e) {
+    const submitDeck = async (e) => {
         e.preventDefault()
-
-        // When a post request is sent to the create url, we'll add a new record to the database.
-        const newPerson = ""
-
-        await fetch('http://localhost:5000/record/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newPerson),
-        }).catch((error) => {
-            window.alert(error)
+        console.log('start submit deck action')
+        // requirements: 3 chars, 30 action characters, name exists
+        const deckCopy = { ...deck }
+        if (deckCopy.deckName === "") {
+            console.log("Deck needs to have a name!")
             return
-        })
-
-        navigate('/')
+        } else if (deckCopy.length !== 30) {
+            console.log("Deck needs to have 30 action cards!")
+            return
+        } else if (deckCopy.characterCards.length !== 3) {
+            console.log("Deck needs to have 3 character cards!")
+            return
+        }
+        dispatch(addDeck(deck))
+        dispatch(setCurrentDeck(null))
     }
 
     // This following section will display the form that takes the input from the user.
@@ -90,30 +116,39 @@ const CreateDeckPage = () => {
             {/* This div takes left hand column */}
             <div>
                 <h3>My Deck</h3>
+                <form onSubmit={submitDeck}>
+                    <input name="deck_name"
+                        onChange={(e) => {
+                            let newDeck = { ...deck, deckName: e.target.value }
+                            dispatch(setCurrentDeck(newDeck))
+                        }}
+                        value={deck.deckName}></input>
+                    <button onClick={submitDeck}>Create Deck</button>
+                </form>
                 <p>Character Cards</p>
-                {deck.characterCards.map((card) => {
+                {deck != null && deck.characterCards.map((card) => {
                     return (
                         // <Card key={card.id} card={card} />
-                        <>
+                        <div key={`${card.name}_div`}>
                             <p key={`${card.name}_text`}>{card.name}</p>
                             <button
                                 key={`${card.name}_button`}
                                 onClick={() => removeCardFromDeck(card)}>
                                 Remove</button>
-                        </>
+                        </div>
                     )
                 })}
                 <p>Action Cards</p>
-                {deck.actionCards.map((card) => {
+                {deck != null && deck.actionCards.map((card) => {
                     return (
                         // <Card key={card.id} card={card} />
-                        <>
+                        <div key={`${card.name}_div`}>
                             <p key={`${card.name}_text`}>{card.name} x {card.count}</p>
                             <button
                                 key={`${card.name}_button`}
                                 onClick={() => removeCardFromDeck(card)}>
                                 Remove</button>
-                        </>
+                        </div>
                     )
                 })}
             </div>
@@ -121,7 +156,7 @@ const CreateDeckPage = () => {
             <div>
                 <CardList onClickAction={addCardToDeck} />
             </div>
-        </div>
+        </div >
     )
 }
 

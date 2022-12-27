@@ -32,7 +32,8 @@ const CardList = (props) => {
     // This method fetches the relevant card types from the database.
     useEffect(() => {
         // card should either be "" or one of the elements in cardsToFetch
-        async function getCards(cardType) {
+        // cards are "mostly" static, so I don't need to make any backend calls to any of the card databases
+        const getCards = async (cardType) => {
             let allCards = []
 
             if (!cardsToFetch.includes(cardType)) {
@@ -72,7 +73,7 @@ const CardList = (props) => {
     }, [typeFilter, search])
 
     // This method will map out the cards on the table
-    function makeCardList(onClickAction) {
+    const makeCardList = (onClickAction) => {
         return cards.map((card) => {
             if (onClickAction) {
                 return (

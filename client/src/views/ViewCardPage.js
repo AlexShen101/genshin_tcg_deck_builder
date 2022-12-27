@@ -20,7 +20,7 @@ const viewCardPage = (props) => {
     // This method fetches the relevant card types from the database.
     useEffect(() => {
         // card should either be "" or one of the elements in cardsToFetch
-        async function getCard(cardType, id) {
+        const getCard = async (cardType, id) => {
             let allCards = []
             const fetchUrl = `http://localhost:5000/${cardType}/${id}`
             const response = await fetch(fetchUrl)
