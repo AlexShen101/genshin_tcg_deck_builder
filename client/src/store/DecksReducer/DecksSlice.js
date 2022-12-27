@@ -14,20 +14,20 @@ const decksSlice = createSlice({
                 return state
             })
             .addCase(getDeck.fulfilled, (state, action) => {
-                console.log(state)
                 console.log(action.payload)
             })
             .addCase(addDeck.fulfilled, (state, action) => {
-                console.log(state)
-                console.log(action.payload)
                 state.push(action.payload)
             })
             .addCase(deleteDeck.fulfilled, (state, action) => {
-                console.log(state)
-                console.log(action.payload)
+                // action payload is the id of the deck deleted
+                let id = action.payload
+                state = state.filter((deck) => {
+                    return deck._id !== id
+                })
+                return state
             })
             .addCase(updateDeck.fulfilled, (state, action) => {
-                console.log(state)
                 console.log(action.payload)
             })
             .addMatcher(

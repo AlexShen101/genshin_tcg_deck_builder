@@ -2,42 +2,27 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
+import { deleteDeck, editDeck } from '../store/DecksReducer/DeckThunk'
+
 const MyDecksPage = () => {
-    console.log("rerender")
     const dispatch = useDispatch()
     const decks = useSelector((state) => {
         return state.decks
     })
-    console.log(decks)
 
-    // This method will delete a record
-    // const deleteRecord = async (id) => {
-    //     await fetch(`http://localhost:5000/${id}`, {
-    //         method: 'DELETE',
-    //     })
+    const editDeck = (id) => {
+        // open the edit deck page
+        // set current deck to the given deck
+        let deck = decks.find((deck) => deck._id === id)
 
-    //     const newRecords = records.filter((el) => el._id !== id)
-    //     setRecords(newRecords)
-    // }
-
-    // This method will map out the records on the table
-    // const recordList = () => {
-    //     return records.map((record) => {
-    //         return (
-    //             <Record
-    //                 record={record}
-    //                 deleteRecord={() => deleteRecord(record._id)}
-    //                 key={record._id}
-    //             />
-    //         )
-    //     })
-    // }
+    }
 
     const makeDeckList = () => {
         return decks.map((deck) => {
             return (
                 <tr key={`${deck._id}`}>
-                    <th>{deck.deckName}</th>
+                    <th>{deck.deckName}<button onClick={() => editDeck(deck._id)}> Edit Deck</button>
+                        <button onClick={() => dispatch(deleteDeck(deck._id))}> Delete Deck</button></th>
                     <th>
                         {deck.characterCards.map((card) => {
                             return card.name + " "
@@ -57,8 +42,6 @@ const MyDecksPage = () => {
                     <tr>
                         <th>Deck Name</th>
                         <th>Characters</th>
-                        <th>Level</th>
-                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>

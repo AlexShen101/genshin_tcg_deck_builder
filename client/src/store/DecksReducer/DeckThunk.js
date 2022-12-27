@@ -36,22 +36,28 @@ export const deleteDeck = createAsyncThunk(
     'decks/delete',
     async (id) => {
         const options = {
-            type: 'DELETE'
+            method: 'DELETE'
         }
         const response = await fetch(`http://localhost:5000/decks/${id}`, options).then(
             (data) => data.json())
+        // this response is just a confirmation json
+        return id
     }
 )
 
 export const updateDeck = createAsyncThunk(
     'decks/update',
-    async (id, deck) => {
+    async (id, newDeck) => {
         const options = {
-            type: 'PUT',
-            body: deck
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newDeck)
         }
         const response = await fetch(`http://localhost:5000/decks/${id}`, options).then(
             (data) => data.json())
+        console.log(response)
         return response
     }
 )

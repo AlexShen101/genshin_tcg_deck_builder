@@ -24,10 +24,10 @@ deckRoutes.route("/decks").get((req, res) => {
 // Gets a single deck using the id provided
 deckRoutes.route("/decks/:id").get((req, res) => {
     let db_connect = dbo.getDb("stored_data");
-    let myquery = { _id: ObjectId(req.params.id) };
+    let myQuery = { _id: ObjectId(req.params.id) };
     db_connect
         .collection("decks")
-        .findOne(myquery, (err, result) => {
+        .findOne(myQuery, (err, result) => {
             if (err) throw err;
             res.json(result);
         });
@@ -50,10 +50,10 @@ deckRoutes.route("/decks").post((req, res) => {
 // Deletes a deck to the database
 deckRoutes.route("/decks/:id").delete((req, res) => {
     let db_connect = dbo.getDb("stored_data");
-    let myquery = { _id: ObjectId(req.body.id) };
+    let myQuery = { _id: ObjectId(req.params.id) };
     db_connect
         .collection("decks")
-        .deleteOne(myquery, (err, result) => {
+        .deleteOne(myQuery, (err, result) => {
             if (err) throw err;
             res.json(result);
         })
@@ -62,10 +62,11 @@ deckRoutes.route("/decks/:id").delete((req, res) => {
 // Updates a deck in the database
 deckRoutes.route("/decks/:id").put((req, res) => {
     let db_connect = dbo.getDb("stored_data");
-    let deck = {}
+    let myQuery = { _id: ObjectId(req.parms.id) };
+    let newDeck = req.body
     db_connect
         .collection("decks")
-        .updateOne(deck, (err, result) => {
+        .updateOne(myQuery, newDeck, (err, result) => {
             if (err) throw err;
             res.json(result);
         })
