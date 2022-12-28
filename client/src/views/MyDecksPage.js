@@ -12,7 +12,6 @@ const MyDecksPage = () => {
 
     const editDeck = (id) => {
         // open the edit deck page
-        // set current deck to the given deck
         let deck = decks.find((deck) => deck._id === id)
     }
 
@@ -22,10 +21,9 @@ const MyDecksPage = () => {
                 <tr key={`${deck._id}`}>
                     <th>
                         {deck.deckName}
-                        <button onClick={() => editDeck(deck._id)}>
-                            {' '}
+                        <Link to={`/edit_deck/${deck._id}`}>
                             Edit Deck
-                        </button>
+                        </Link>
                         <button onClick={() => dispatch(deleteDeck(deck._id))}>
                             {' '}
                             Delete Deck

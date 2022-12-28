@@ -8,6 +8,8 @@ import Card from './Card'
 import { setCurrentDeck } from '../store/CurrentDeckReducer/CurrentDeckSlice'
 import { addDeck } from '../store/DecksReducer/DeckThunk'
 
+import { BsFillTrashFill } from 'react-icons/bs'
+
 // See CurrentDeckSlice for the deck state structure
 const DeckEditor = (props) => {
     let deck = useSelector((state) => {
@@ -94,71 +96,60 @@ const DeckEditor = (props) => {
         dispatch(setCurrentDeck(newDeck))
     }
 
+    const printCard = (card) => {
+        return (
+            <div key={`${card.name}_div`}>
+                <p key={`${card.name}_text`}>{card.name}</p>
+                <button
+                    className="btn btn-outline-danger"
+                    key={`${card.name}_button`}
+                    onClick={() => removeCardFromDeck(card)}
+                >
+                    <BsFillTrashFill />
+                </button>
+            </div>
+        )
+    }
     // This following section will display the form that takes the input from the user.
     return (
-        <div>
-            {/* This div takes left hand column */}
-            <div>
-                <h3>My Deck</h3>
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault()
-                        props.submitDeck(deck)
-                    }}
-                >
-                    <input
-                        name="deck_name"
-                        onChange={(e) => {
-                            let newDeck = { ...deck, deckName: e.target.value }
-                            dispatch(setCurrentDeck(newDeck))
-                        }}
-                        value={deck.deckName}
-                    ></input>
-                    <button
-                        onClick={(e) => {
+        <div className="container-fluid">
+            <div className="row">
+                {/* This div takes left hand column */}
+                <div className="col-sm-4">
+                    <form
+                        onSubmit={(e) => {
                             e.preventDefault()
                             props.submitDeck(deck)
                         }}
                     >
-                        Save
-                    </button>
-                </form>
-                <p>Character Cards</p>
-                {deck.characterCards.map((card) => {
-                    return (
-                        // <Card key={card.id} card={card} />
-                        <div key={`${card.name}_div`}>
-                            <p key={`${card.name}_text`}>{card.name}</p>
-                            <button
-                                key={`${card.name}_button`}
-                                onClick={() => removeCardFromDeck(card)}
-                            >
-                                Remove
-                            </button>
-                        </div>
-                    )
-                })}
-                <p>Action Cards</p>
-                {deck.actionCards.map((card) => {
-                    return (
-                        // <Card key={card.id} card={card} />
-                        <div key={`${card.name}_div`}>
-                            <p key={`${card.name}_text`}>
-                                {card.name} x {card.count}
-                            </p>
-                            <button
-                                key={`${card.name}_button`}
-                                onClick={() => removeCardFromDeck(card)}
-                            >
-                                Remove
-                            </button>
-                        </div>
-                    )
-                })}
-            </div>
-            {/* This cardlist takes right hand column */}
-            <div>
-                <CardList onClickAction={addCardToDeck} />
+                        <input
+                            className="form-control"
+                            name="deck_name"
+                            onChange={(e) => {
+                                let newDeck = { ...deck, deckName: e.target.value }
+                                dispatch(setCurrentDeck(newDeck))
+                            }}
+                            value={deck.deckName}
+                        ></input>
+                        <button
+                            className="btn btn-primary"
+                            onClick={(e) => {
+                                e.preventDefault()
+                                props.submitDeck(deck)
+                            }}
+                        >
+                            Save
+                        </button>
+                    </form>
+                    <p>Character Cards</p>
+                    {deck.characterCards.map((card) => printCard(card))}
+                    <p>Action Cards</p>
+                    {deck.actionCards.map((card) => printCard(card))}
+                </div>
+                {/* This cardlist takes right hand column */}
+                <div className="col-sm-8">
+                    <CardList onClickAction={addCardToDeck} />
+                </div>
             </div>
         </div>
     )

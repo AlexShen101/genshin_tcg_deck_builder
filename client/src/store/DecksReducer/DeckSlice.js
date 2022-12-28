@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { getDecks, getDeck, addDeck, deleteDeck, updateDeck } from './DeckThunk'
 
-const decksSlice = createSlice({
+const deckSlice = createSlice({
     name: 'decks',
     initialState: [],
     reducers: {},
@@ -41,4 +41,4 @@ const decksSlice = createSlice({
     },
 })
 
-export default decksSlice.reducer
+export default deckSlice.reducer

@@ -1,0 +1,31 @@
+$primary: rgb(115, 107, 219);
+
+.btn-primary {
+    background-color: $primary;
+    border-color: darken($primary, 20);
+    transition-duration: 0.3s;
+}
+
+.btn-primary-active {
+    background-color: darken($color: $primary, $amount: 10);
+    border-color: darken($primary, 20);
+}
+
+.btn-primary:hover {
+    background-color: darken($color: $primary, $amount: 10);
+    border-color: darken($primary, 20);
+}
+
+.btn-primary:focus {
+    background-color: darken($color: $primary, $amount: 10);
+    border-color: darken($primary, 20);
+}
+
+a {
+    color: $primary;
+    transition-duration: 0.3s;
+}
+
+a:hover {
+    color: lighten($color: $primary, $amount: 10);
+}

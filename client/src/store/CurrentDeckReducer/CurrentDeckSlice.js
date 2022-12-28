@@ -11,15 +11,12 @@ const initialState = {
 
 const getInitialState = () => {
     let localDeck = window.localStorage.getItem('deck')
-    console.log(localDeck)
-    console.log(typeof localDeck)
     let result = localDeck != 'null' && localDeck != null
-    console.log(result)
     if (result) return JSON.parse(localDeck)
     else return initialState
 }
 const currentDeckSlice = createSlice({
-    name: 'currentDeck',
+    name: 'cards',
     initialState: getInitialState(),
     reducers: {
         setCurrentDeck: (state, action) => {

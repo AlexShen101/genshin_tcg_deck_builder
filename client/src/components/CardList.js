@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 
-import Card from './Card'
-
-// backend URLs to call get requests on
 const cardsToFetch = [
     'characterCards',
     'artifactCards',
@@ -13,67 +11,34 @@ const cardsToFetch = [
     'weaponCards',
 ]
 
-const mapCardToImageFolder = {
-    characterCards: 'characters',
-    artifactCards: 'weapons_artifacts',
-    eventCards: 'event',
-    supportCards: 'support',
-    talentCards: 'talents',
-    weaponCards: 'weapons_artifacts',
-}
+import Card from './Card'
 
 // handles rendering and functions for the card displayer
 const CardList = (props) => {
-    const [cards, setCards] = useState([])
+    let cards = useSelector((state) => {
+        return state.cards
+    })
+    const [cardsToDisplay, setCardsToDisplay] = useState(cards)
     const [typeFilter, setTypeFilter] = useState('artifactCards')
     const [search, setSearch] = useState('')
 
-    // This method fetches the relevant card types from the database.
+    // filter cards every time typeFilter or search is changed
     useEffect(() => {
-        // card should either be "" or one of the elements in cardsToFetch
-        // cards are "mostly" static, so I don't need to make any backend calls to any of the card databases
-        const getCards = async (cardType) => {
-            let allCards = []
-
-            if (!cardsToFetch.includes(cardType)) {
-                console.log(
-                    'cardtype: ' +
-                        cardType +
-                        ' should be invalid, check for bug'
-                )
-            } else {
-                const fetchUrl = `http://localhost:5000/${cardType}`
-                const response = await fetch(fetchUrl)
-                if (!response.ok) {
-                    const message = `An error occurred: ${response.statusText}`
-                    window.alert(message)
-                    return
+        if (cards == null) return null
+        const newCards = cards.filter((card) => {
+            if (card.cardType == typeFilter.replace('Cards', '')) {
+                if (card.name.includes(search)) {
+                    return true
                 }
-                let outputCards = await response.json()
-                outputCards = outputCards.map((card) => {
-                    return {
-                        ...card,
-                        firebasePath: `/${mapCardToImageFolder[typeFilter]}/${card.image_id}/${card.image_id}.png`,
-                        cardType: typeFilter.replace('Cards', ''),
-                    }
-                })
-                outputCards = outputCards.filter((item) => {
-                    if (
-                        item.name.toLowerCase().includes(search.toLowerCase())
-                    ) {
-                        return item
-                    }
-                })
-                setCards(outputCards)
             }
-        }
-        getCards(typeFilter)
-        return
+            return false
+        })
+        setCardsToDisplay(newCards)
     }, [typeFilter, search])
 
     // This method will map out the cards on the table
     const makeCardList = (onClickAction) => {
-        return cards.map((card) => {
+        return cardsToDisplay.map((card) => {
             if (onClickAction) {
                 return (
                     <button
@@ -102,15 +67,17 @@ const CardList = (props) => {
             <h3>Card List</h3>
             <div>
                 <input
+                    className="form-control"
                     type="string"
                     name="filter_card_input"
                     value={search}
+                    placeholder="Search for cards here"
                     onChange={(event) => setSearch(event.target.value)}
                 ></input>
                 {cardsToFetch.map((item) => {
                     return (
                         <button
-                            name={`${item}_button`}
+                            className={item === typeFilter ? "btn btn-primary btn-primary-active" : "btn btn-primary"}
                             onClick={() => {
                                 setTypeFilter(item)
                                 setSearch('')

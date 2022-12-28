@@ -7,6 +7,8 @@ import { setCurrentDeck } from '../store/CurrentDeckReducer/CurrentDeckSlice'
 
 // See CurrentDeckSlice for the deck state structure
 const CreateDeckPage = () => {
+    console.log("rendering create deck page")
+
     const dispatch = useDispatch()
     const addMyDeck = async (deck) => {
         console.log('start submit deck action')

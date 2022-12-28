@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 // We components needed
 import Navbar from './components/Navbar'
 import ViewAllCardsPage from './views/ViewAllCardsPage'
-// import EditDeckPage from './views/EditDeckPage'
+import EditDeckPage from './views/EditDeckPage'
 import CreateDeckPage from './views/CreateDeckPage'
 import ViewCardPage from './views/ViewCardPage'
 import MyDecksPage from './views/MyDecksPage'
@@ -12,11 +12,15 @@ import PageNotFound from './views/PageNotFound'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { getDecks } from './store/DecksReducer/DeckThunk'
+import { getCards } from './store/CardsReducer/CardThunk'
+
+import './styles/base.scss'
 
 const App = () => {
     // start redux things
     const dispatch = useDispatch()
     dispatch(getDecks())
+    dispatch(getCards())
 
     return (
         <BrowserRouter>
@@ -34,6 +38,7 @@ const App = () => {
                     element={<ViewCardPage />}
                 />
                 <Route path="/my_decks" element={<MyDecksPage />} />
+                <Route path="/edit_deck/:id" element={<EditDeckPage />} />
                 <Route path="*" element={<PageNotFound />}></Route>
             </Routes>
         </BrowserRouter>
