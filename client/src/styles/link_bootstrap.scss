@@ -1,0 +1,8 @@
+a {
+    color: $primary;
+    transition-duration: 0.3s;
+}
+
+a:hover {
+    color: lighten($color: $primary, $amount: 10);
+}

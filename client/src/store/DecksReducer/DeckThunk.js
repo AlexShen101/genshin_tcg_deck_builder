@@ -25,7 +25,7 @@ export const addDeck = createAsyncThunk('decks/add', async (deck) => {
     const response = await fetch(`http://localhost:5000/decks`, options).then(
         (data) => data.json()
     )
-    return { ...deck, deckId: response.insertedId }
+    return { ...deck, _id: response.insertedId }
 })
 
 export const deleteDeck = createAsyncThunk('decks/delete', async (id) => {
@@ -33,16 +33,15 @@ export const deleteDeck = createAsyncThunk('decks/delete', async (id) => {
         method: 'DELETE',
     }
     const response = await fetch(
-        `http://localhost:5000/decks/${id}`,
-        options
+        `http://localhost:5000/decks/${id}`, options
     ).then((data) => data.json())
     // this response is just a confirmation json
-    return id
+    return response
 })
 
 export const updateDeck = createAsyncThunk(
     'decks/update',
-    async (id, newDeck) => {
+    async ({ id, deck: newDeck }) => {
         const options = {
             method: 'PUT',
             headers: {
@@ -54,7 +53,6 @@ export const updateDeck = createAsyncThunk(
             `http://localhost:5000/decks/${id}`,
             options
         ).then((data) => data.json())
-        console.log(response)
         return response
     }
 )

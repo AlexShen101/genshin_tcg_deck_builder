@@ -10,10 +10,11 @@ const initialState = {
 }
 
 const getInitialState = () => {
-    let localDeck = window.localStorage.getItem('deck')
-    let result = localDeck != 'null' && localDeck != null
-    if (result) return JSON.parse(localDeck)
-    else return initialState
+    // let localDeck = window.localStorage.getItem('deck')
+    // let result = localDeck != 'null' && localDeck != null
+    // if (result) return JSON.parse(localDeck)
+    // else return initialState
+    return initialState
 }
 const currentDeckSlice = createSlice({
     name: 'cards',

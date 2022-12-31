@@ -19,6 +19,7 @@ const deckSlice = createSlice({
             })
             .addCase(deleteDeck.fulfilled, (state, action) => {
                 // action payload is the id of the deck deleted
+                console.log("new state")
                 let id = action.payload
                 state = state.filter((deck) => {
                     return deck._id !== id
@@ -26,8 +27,24 @@ const deckSlice = createSlice({
                 return state
             })
             .addCase(updateDeck.fulfilled, (state, action) => {
-                console.log(action.payload)
+                let id = action.payload._id
+                let newDeck = action.payload
+                for (let i = 0; i < state.length; i++) {
+                    if (state[i]._id === id) {
+                        state[i] = newDeck
+                    }
+                }
+                return state
             })
+            // .addMatcher(
+            //     // if the action name ends with rejected, perform the following function
+            //     (action) => {
+            //         if (action.type) return action.type.endsWith('pending')
+            //     },
+            //     (state, action) => {
+            //         return "loading"
+            //     }
+            // )
             .addMatcher(
                 // if the action name ends with rejected, perform the following function
                 (action) => {

@@ -1,26 +1,40 @@
 import React, { useState, useMemo } from 'react'
-import { useNavigate } from 'react-router'
 import CardList from './CardList'
 import { useSelector, useDispatch } from 'react-redux'
 
 import Card from './Card'
 
-import { setCurrentDeck } from '../store/CurrentDeckReducer/CurrentDeckSlice'
+// import { setCurrentDeck } from '../store/CurrentDeckReducer/CurrentDeckSlice'
 import { addDeck } from '../store/DecksReducer/DeckThunk'
 
 import { BsFillTrashFill } from 'react-icons/bs'
 
+const emptyDeck = {
+    deckName: '',
+    characterCards: [],
+    actionCards: [],
+    length: 0,
+}
 // See CurrentDeckSlice for the deck state structure
 const DeckEditor = (props) => {
-    let deck = useSelector((state) => {
-        return state.currentDeck
-    })
-    window.localStorage.setItem(
-        'deck',
-        typeof deck == 'object' ? JSON.stringify(deck) : deck
-    )
+    // let deck = useSelector((state) => {
+    //     return state.currentDeck
+    // })
+    const [deck, setDeck] = useState(props.currentDeck)
 
-    const dispatch = useDispatch()
+    // invalid cards are cards that can't be added to the deck anymore (becuase max value has been reached. this ignores talent cards, which are handled separately)
+    // all character cards can only be added once, so they are all invalid
+    // all artifact cards can only be added twice, so if there are two artifact cards included then it is invalid
+    let invalidCards = [...deck.characterCards]
+    for (let i = 0; i < deck.actionCards.length; i++) {
+        if (deck.actionCards[i].count === 2) invalidCards.push(deck.actionCards[i])
+    }
+    // window.localStorage.setItem(
+    //     'deck',
+    //     typeof deck == 'object' ? JSON.stringify(deck) : deck
+    // )
+
+    // const dispatch = useDispatch()
     // add a given card to the deck or throw an alert otherwise
     const addCardToDeck = (card) => {
         // spreading is just used to clone the deck
@@ -63,7 +77,8 @@ const DeckEditor = (props) => {
                 length: deck.length + 1,
             }
         }
-        dispatch(setCurrentDeck(newDeck))
+        setDeck(newDeck)
+        // dispatch(setCurrentDeck(newDeck))
     }
 
     const removeCardFromDeck = (card) => {
@@ -93,13 +108,19 @@ const DeckEditor = (props) => {
                 }
             }
         }
-        dispatch(setCurrentDeck(newDeck))
+        setDeck(newDeck)
+        // dispatch(setCurrentDeck(newDeck))
     }
 
     const printCard = (card) => {
         return (
             <div key={`${card.name}_div`}>
-                <p key={`${card.name}_text`}>{card.name}</p>
+                <img src={card.highresUrl}></img>
+                {card.count == 2 ?
+                    <p key={`${card.name}_text`}>{card.name} x 2</p>
+                    : <p key={`${card.name}_text`}>{card.name}</p>
+                }
+
                 <button
                     className="btn btn-outline-danger"
                     key={`${card.name}_button`}
@@ -115,7 +136,7 @@ const DeckEditor = (props) => {
         <div className="container-fluid">
             <div className="row">
                 {/* This div takes left hand column */}
-                <div className="col-sm-4">
+                <div className="col-sm-4 border rounded">
                     <form
                         onSubmit={(e) => {
                             e.preventDefault()
@@ -123,11 +144,12 @@ const DeckEditor = (props) => {
                         }}
                     >
                         <input
-                            className="form-control"
+                            className="form-control editable-title"
                             name="deck_name"
                             onChange={(e) => {
                                 let newDeck = { ...deck, deckName: e.target.value }
-                                dispatch(setCurrentDeck(newDeck))
+                                setDeck(newDeck)
+                                // dispatch(setCurrentDeck(newDeck))
                             }}
                             value={deck.deckName}
                         ></input>
@@ -140,6 +162,9 @@ const DeckEditor = (props) => {
                         >
                             Save
                         </button>
+                        <button
+                            className="btn btn-danger"
+                            onClick={(e) => setDeck(emptyDeck)}>Clear Deck</button>
                     </form>
                     <p>Character Cards</p>
                     {deck.characterCards.map((card) => printCard(card))}
@@ -148,7 +173,7 @@ const DeckEditor = (props) => {
                 </div>
                 {/* This cardlist takes right hand column */}
                 <div className="col-sm-8">
-                    <CardList onClickAction={addCardToDeck} />
+                    <CardList onClickAction={addCardToDeck} characters={deck.characterCards} invalidCards={invalidCards} />
                 </div>
             </div>
         </div>

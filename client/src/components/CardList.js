@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 const cardsToFetch = [
     'characterCards',
@@ -24,24 +24,49 @@ const CardList = (props) => {
 
     // filter cards every time typeFilter or search is changed
     useEffect(() => {
-        if (cards == null) return null
-        const newCards = cards.filter((card) => {
+        console.log("useeffect triggered")
+        if (cards == null) return
+        else if (cards == "loading") return
+        let newCards = cards.filter((card) => {
             if (card.cardType == typeFilter.replace('Cards', '')) {
-                if (card.name.includes(search)) {
+                if (card.name.toLowerCase().includes(search.toLowerCase())) {
+                    console.log(card.name)
                     return true
                 }
             }
             return false
         })
-        setCardsToDisplay(newCards)
-    }, [typeFilter, search])
+        console.log("here")
+        if (typeFilter.replace('Cards', '') === 'talent') {
+            newCards = newCards.filter((card) => {
+                let checkIfValid = props.characters.find((characterCard) => {
+                    return card.name.includes(characterCard.name)
+                })
+                console.log(checkIfValid)
+                if (!checkIfValid) return false
+                return true
+            })
+        }
+        newCards = newCards.filter((card) => {
+            if (props.invalidCards.length !== 0) {
+                let checkIfInvalid = props.invalidCards.find((invalidCard) => {
+                    return card._id === invalidCard._id
+                })
+                if (checkIfInvalid) return false
+            }
+            return true
+        })
 
+
+        setCardsToDisplay(newCards)
+    }, [typeFilter, search, cards, props.invalidCards, props.characters])
     // This method will map out the cards on the table
     const makeCardList = (onClickAction) => {
         return cardsToDisplay.map((card) => {
             if (onClickAction) {
                 return (
                     <button
+                        className="cardlist-item btn btn-primary-outline p-2 col-lg-3 col-md-4 col-6 align-top"
                         onClick={() => onClickAction(card)}
                         key={`card_button_wrapper_${card._id}`}
                     >
@@ -51,6 +76,7 @@ const CardList = (props) => {
             } else {
                 return (
                     <Link
+                        className="cardlist-item col d-inline-flex m-3 align-top"
                         key={`button_${card._id}`}
                         to={`/view_card/${typeFilter}/${card._id}`}
                     >
@@ -63,33 +89,45 @@ const CardList = (props) => {
 
     // Displays a grid of cards
     return (
-        <div>
-            <h3>Card List</h3>
-            <div>
-                <input
-                    className="form-control"
-                    type="string"
-                    name="filter_card_input"
-                    value={search}
-                    placeholder="Search for cards here"
-                    onChange={(event) => setSearch(event.target.value)}
-                ></input>
-                {cardsToFetch.map((item) => {
-                    return (
-                        <button
-                            className={item === typeFilter ? "btn btn-primary btn-primary-active" : "btn btn-primary"}
-                            onClick={() => {
-                                setTypeFilter(item)
-                                setSearch('')
-                            }}
-                            key={`${item}_button`}
-                        >
-                            {item.replace('Cards', ' cards')}
-                        </button>
-                    )
-                })}
-            </div>
-            {makeCardList(props.onClickAction)}
+        <div className='col text-center'>
+            {cardsToDisplay != "loading" ?
+                <>
+                    <h3>Card List</h3>
+                    <div className='container-fluid'>
+                        <input
+                            className="form-control"
+                            type="string"
+                            name="filter_card_input"
+                            value={search}
+                            placeholder="Search for cards here"
+                            onChange={(event) => setSearch(event.target.value)}
+                        ></input>
+                        <div className="container-fluid d-flex justify-content-center">
+                            {cardsToFetch.map((item) => {
+                                return (
+                                    <button
+                                        className={item === typeFilter ? "btn btn-outline- btn-primary-active col-sm m-1" : "btn btn-outline-primary col-sm m-1"}
+                                        onClick={() => {
+                                            setTypeFilter(item)
+                                            setSearch('')
+                                        }}
+                                        key={`${item}_button`}
+                                    >
+                                        {item.replace('Cards', ' cards')}
+                                    </button>
+                                )
+                            })}
+                        </div>
+                    </div>
+                    {makeCardList(props.onClickAction)}
+                </>
+                :
+                // Code for when cardlist is still loading
+                <>
+                    <h3>CardList</h3>
+                    <p>Loading Page</p>
+                </>
+            }
         </div>
     )
 }

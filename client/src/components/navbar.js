@@ -24,7 +24,7 @@ const links = [
 // Here, we display our Navbar
 const Navbar = () => {
     return (
-        <div>
+        <div className='mb-4'>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <NavLink className="navbar-brand" to="/">
                     <img

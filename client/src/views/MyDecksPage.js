@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { deleteDeck, editDeck } from '../store/DecksReducer/DeckThunk'
+import { getDecks, deleteDeck, editDeck } from '../store/DecksReducer/DeckThunk'
 
 const MyDecksPage = () => {
+    console.log("rendering myDecksPage")
     const dispatch = useDispatch()
     const decks = useSelector((state) => {
         return state.decks
     })
 
-    const editDeck = (id) => {
-        // open the edit deck page
-        let deck = decks.find((deck) => deck._id === id)
+    if (decks === "loading") {
+        return <p>Loading</p>
     }
 
     const makeDeckList = () => {

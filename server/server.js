@@ -20,7 +20,8 @@ app.use(require("./routes/summons.js"));
 app.use(require("./routes/supportCards.js"));
 app.use(require("./routes/talentCards.js"));
 app.use(require("./routes/weaponCards.js"));
-app.use(require("./routes/Decks.js"));
+app.use(require("./routes/decks.js"));
+app.use(require("./routes/firebaseImageUrls.js"));
 
 app.listen(port, () => {
   // perform a database connection when server starts

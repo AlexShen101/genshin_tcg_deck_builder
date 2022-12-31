@@ -1,5 +1,4 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import queryImage from '../../firebase/FirebaseQueryImage'
 
 // backend URLs to call get requests on
 const cardsToFetch = [
@@ -7,6 +6,8 @@ const cardsToFetch = [
     'artifactCards',
     'eventCards',
     'supportCards',
+    'summons',
+    'statuses',
     'talentCards',
     'weaponCards',
 ]
@@ -26,30 +27,28 @@ const mapCardToImageFolder = {
  */
 const fetchAllCards = async () => {
     let allCards = []
+    // connect to backend for image urls
+    const imageUrlsResponse = await fetch(`http://localhost:5000/firebaseImageUrls`)
+    const imageUrls = await imageUrlsResponse.json()
     for (const cardType of cardsToFetch) {
-        console.log(cardType)
         const fetchUrl = `http://localhost:5000/${cardType}`
         const response = await fetch(fetchUrl)
-        let outputCards = await response.json()
+        const outputCards = await response.json()
         for (const card of outputCards) {
-            const firebasePath = `/${mapCardToImageFolder[cardType]}/${card.image_id}/${card.image_id}.png`
-            const imageUrl = await queryImage(firebasePath)
+            const cardUrl = imageUrls.find(url => url.image_id === card.image_id)
             const newCard = {
                 ...card,
-                imageUrl: imageUrl,
+                imageUrl: cardUrl ? cardUrl.icon_imageUrl : undefined,
+                highResImageUrl: cardUrl ? cardUrl.highres_imageUrl : undefined,
                 cardType: cardType.replace('Cards', ''),
             }
             allCards.push(newCard)
         }
     }
-    console.log(allCards)
     return allCards
-
 }
 
 export const getCards = createAsyncThunk('cards/getAll', async () => {
-    console.log("starting")
-
     // right now this is executing before all cards are fetched
     let response = await fetchAllCards()
     return response

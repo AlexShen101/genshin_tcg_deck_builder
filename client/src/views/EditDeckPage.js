@@ -1,16 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { addDeck } from '../store/DecksReducer/DeckThunk'
-import { setCurrentDeck } from '../store/CurrentDeckReducer/CurrentDeckSlice'
+import { getDecks, updateDeck } from '../store/DecksReducer/DeckThunk'
+// import { setCurrentDeck } from '../store/CurrentDeckReducer/CurrentDeckSlice'
 import DeckEditor from '../components/DeckEditor'
+import { setCurrentDeck } from '../store/CurrentDeckReducer/CurrentDeckSlice';
 
 // See CurrentDeckSlice for the deck state structure
 const EditDeckPage = (props) => {
     console.log("rendering edit deck page")
+    const navigate = useNavigate()
     const dispatch = useDispatch()
-
     // get decks, and use url id to find this deck
     // I could use getDeck to fetch a deck from the backend and setCurrentDeck to that
     // instead I assume decks is accurate and loaded upon app initialization, thus I can get the decks from redux instead
@@ -19,9 +20,15 @@ const EditDeckPage = (props) => {
         return state.decks
     })
 
-    const thisDeck = decks.find(deck => deck._id === deckId)
-    dispatch(setCurrentDeck(thisDeck))
+    useEffect(() => {
+        dispatch(getDecks())
+    }, [])
 
+    if (decks === "loading") {
+        return <p>Loading ...</p>
+    }
+    const thisDeck = decks.find(deck => deck._id === deckId)
+    // dispatch(setCurrentDeck(thisDeck))
 
     const editMydeck = async (deck) => {
         console.log('start submit deck action')
@@ -37,14 +44,21 @@ const EditDeckPage = (props) => {
             console.log('Deck needs to have 3 character cards!')
             return
         }
-        dispatch(addDeck(deck))
-        dispatch(setCurrentDeck(null))
+        dispatch(updateDeck({ id: deck._id, deck: deck }))
+        return navigate("/my_decks")
+        // dispatch(setCurrentDeck(null))
     }
 
     return (
-        <div>
-            <DeckEditor submitDeck={editMydeck} />
-        </div>
+        <>
+            {thisDeck === undefined ?
+                <p>No deck was found with this id...</p>
+                :
+                <div>
+                    <DeckEditor submitDeck={editMydeck} currentDeck={thisDeck} />
+                </div>
+            }
+        </>
     )
 }
 

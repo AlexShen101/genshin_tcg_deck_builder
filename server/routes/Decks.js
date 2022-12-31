@@ -55,20 +55,25 @@ deckRoutes.route("/decks/:id").delete((req, res) => {
         .collection("decks")
         .deleteOne(myQuery, (err, result) => {
             if (err) throw err;
-            res.json(result);
+            return res.json(req.params.id);
         })
 })
 
 // Updates a deck in the database
 deckRoutes.route("/decks/:id").put((req, res) => {
     let db_connect = dbo.getDb("stored_data");
-    let myQuery = { _id: ObjectId(req.parms.id) };
-    let newDeck = req.body
+    let myQuery = { _id: ObjectId(req.params.id) };
+    let newDeck = {
+        $set: {
+            ...req.body,
+            _id: ObjectId(req.params.id)
+        }
+    };
     db_connect
         .collection("decks")
         .updateOne(myQuery, newDeck, (err, result) => {
             if (err) throw err;
-            res.json(result);
+            return res.json(newDeck.$set)
         })
 })
 

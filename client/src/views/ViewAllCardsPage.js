@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import CardList from '../components/CardList'
 
-const CreateDeckPage = () => {
+const ViewAllCardsPage = () => {
+    console.log("rendering view all cards page")
+
     return (
-        <div>
-            <h3>All Cards</h3>
+        <div className='row'>
             <CardList />
         </div>
     )
 }
 
-export default CreateDeckPage
+export default ViewAllCardsPage

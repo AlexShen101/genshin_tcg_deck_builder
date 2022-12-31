@@ -1,14 +1,16 @@
 import React from 'react'
 import DeckEditor from '../components/DeckEditor'
 import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
+import { getCards } from '../store/CardsReducer/CardThunk'
 import { addDeck } from '../store/DecksReducer/DeckThunk'
 import { setCurrentDeck } from '../store/CurrentDeckReducer/CurrentDeckSlice'
 
 // See CurrentDeckSlice for the deck state structure
 const CreateDeckPage = () => {
     console.log("rendering create deck page")
-
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const addMyDeck = async (deck) => {
         console.log('start submit deck action')
@@ -25,12 +27,20 @@ const CreateDeckPage = () => {
             return
         }
         dispatch(addDeck(deck))
-        dispatch(setCurrentDeck(null))
+        console.log("here")
+        return navigate("/my_decks")
+    }
+
+    const newDeck = {
+        deckName: '',
+        characterCards: [],
+        actionCards: [],
+        length: 0,
     }
 
     return (
         <div>
-            <DeckEditor submitDeck={addMyDeck} />
+            <DeckEditor submitDeck={addMyDeck} currentDeck={newDeck} />
         </div>
     )
 }

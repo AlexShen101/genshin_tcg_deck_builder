@@ -1,31 +1,26 @@
 $primary: rgb(115, 107, 219);
 
-.btn-primary {
-    background-color: $primary;
-    border-color: darken($primary, 20);
-    transition-duration: 0.3s;
+@import './btn_bootstrap.scss';
+@import './link_bootstrap.scss';
+
+
+// [class*='col-'] {
+//     display: flex;
+// }
+
+// .card-container {
+//     width: fit-content;
+//     margin: 0px;
+// }
+
+.card-text {
+    max-width: 123px;
 }
 
-.btn-primary-active {
-    background-color: darken($color: $primary, $amount: 10);
-    border-color: darken($primary, 20);
+.editable-title {
+    border-color: transparent;
 }
 
-.btn-primary:hover {
-    background-color: darken($color: $primary, $amount: 10);
-    border-color: darken($primary, 20);
-}
-
-.btn-primary:focus {
-    background-color: darken($color: $primary, $amount: 10);
-    border-color: darken($primary, 20);
-}
-
-a {
-    color: $primary;
-    transition-duration: 0.3s;
-}
-
-a:hover {
-    color: lighten($color: $primary, $amount: 10);
+.editable-title:hover {
+    border-color: transparent;
 }
