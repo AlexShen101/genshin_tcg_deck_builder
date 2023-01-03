@@ -1,9 +1,6 @@
-import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React from 'react'
 
 import { NavLink } from 'react-router-dom'
-
-
 
 // Here, we display our Navbar
 const Navbar = () => {
@@ -23,7 +20,7 @@ const Navbar = () => {
     ]
 
     return (
-        <div className='mb-4'>
+        <div className="mb-4">
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                 <img
                     style={{ width: 15 + '%' }}

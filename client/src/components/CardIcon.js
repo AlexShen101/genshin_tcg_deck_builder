@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react'
-
-import queryImage from '../firebase/FirebaseQueryImage'
+import React from 'react'
 
 const CardIcon = (props) => {
     return (

@@ -22,9 +22,9 @@ const CardList = (props) => {
 
     // filter cards every time typeFilter or search is changed
     useEffect(() => {
-        console.log("useeffect triggered")
+        console.log('useeffect triggered')
         if (cards == null) return
-        else if (cards == "loading") return
+        else if (cards == 'loading') return
         let newCards = cards.filter((card) => {
             if (card.cardType == typeFilter.replace('Cards', '')) {
                 if (card.name.toLowerCase().includes(search.toLowerCase())) {
@@ -82,11 +82,11 @@ const CardList = (props) => {
 
     // Displays a grid of cards
     return (
-        <div className='col text-center'>
-            {cardsToDisplay != "loading" ?
+        <div className="col text-center">
+            {cardsToDisplay != 'loading' ? (
                 <>
                     <h3>Card List</h3>
-                    <div className='container-fluid'>
+                    <div className="container-fluid">
                         <input
                             className="form-control"
                             type="string"
@@ -99,7 +99,11 @@ const CardList = (props) => {
                             {cardsToFetch.map((item) => {
                                 return (
                                     <button
-                                        className={`btn m-1 w-25 ${item === typeFilter ? "btn-primary-active" : "btn-outline-primary"}`}
+                                        className={`btn m-1 w-25 ${
+                                            item === typeFilter
+                                                ? 'btn-primary-active'
+                                                : 'btn-outline-primary'
+                                        }`}
                                         onClick={() => {
                                             setTypeFilter(item)
                                             setSearch('')
@@ -114,13 +118,13 @@ const CardList = (props) => {
                     </div>
                     {makeCardList(props.onClickAction)}
                 </>
-                :
+            ) : (
                 // Code for when cardlist is still loading
                 <>
                     <h3>CardList</h3>
                     <p>Loading Page</p>
                 </>
-            }
+            )}
         </div>
     )
 }

@@ -12,23 +12,14 @@ import ViewCardPage from './views/ViewCardPage'
 import MyDecksPage from './views/MyDecksPage'
 import PageNotFound from './views/PageNotFound'
 
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { getCards } from './store/CardsReducer/CardThunk'
 
 import './styles/base.scss'
 
 const App = () => {
-    const user = useSelector((state) => state.user)
     const dispatch = useDispatch()
-
-    // check if user is logged in
-    // if not, redirect to login page
-    // if are, redirect to dashboard page
-
     dispatch(getCards())
-
-    // this should be moved to right after the user is logged in
-    // start redux things
 
     return (
         <BrowserRouter>

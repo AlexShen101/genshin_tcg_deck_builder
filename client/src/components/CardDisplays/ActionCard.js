@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 const ActionCardDisplay = (props) => {
     const card = props.card
@@ -26,37 +26,54 @@ const ActionCardDisplay = (props) => {
             <div className="row">
                 <div className="col-sm-4 col-12">
                     <div className="text-center p-2">
-                        <p className="text-uppercase m-0 card-display-card-name">{card.name}</p>
+                        <p className="text-uppercase m-0 card-display-card-name">
+                            {card.name}
+                        </p>
                     </div>
                     <img src={card.highResImageUrl} className="w-100"></img>
-                    <p className="card-display-card-description fst-italic">{card.description}</p>
+                    <p className="card-display-card-description fst-italic">
+                        {card.description}
+                    </p>
                 </div>
 
                 <div className="col-sm-8 col-12">
-                    {makeHeader("Info")}
+                    {makeHeader('Info')}
                     <div className="d-flex justify-content-center">
                         <ul className="list-group rounded-0 w-50">
-                            <li className="list-group-item border-right-0 color-primary">Type</li>
-                            <li className="list-group-item border-right-0 color-primary">Cost</li>
-                            {card.life &&
-                                <li className="list-group-item border-right-0 color-primary">Duration</li>
-                            }
+                            <li className="list-group-item border-right-0 color-primary">
+                                Type
+                            </li>
+                            <li className="list-group-item border-right-0 color-primary">
+                                Cost
+                            </li>
+                            {card.life && (
+                                <li className="list-group-item border-right-0 color-primary">
+                                    Duration
+                                </li>
+                            )}
                         </ul>
                         <ul className="list-group rounded-0 w-50">
-                            <li className="card-display-card-faction list-group-item border-left-0 ">{card.cardType}</li>
-                            <li className="card-display-card-element list-group-item border-left-0">{card.cost}</li>
-                            {card.life &&
-                                <li className="card-display-card-element list-group-item border-left-0">{card.life === "nan" ? "None" : Math.floor(card.life)}</li>
-                            }
+                            <li className="card-display-card-faction list-group-item border-left-0 ">
+                                {card.cardType}
+                            </li>
+                            <li className="card-display-card-element list-group-item border-left-0">
+                                {card.cost}
+                            </li>
+                            {card.life && (
+                                <li className="card-display-card-element list-group-item border-left-0">
+                                    {card.life === 'nan'
+                                        ? 'None'
+                                        : Math.floor(card.life)}
+                                </li>
+                            )}
                         </ul>
                     </div>
 
-                    {makeBlock("Obtained", card.obtained)}
-                    {makeBlock("Effect", card.effect)}
+                    {makeBlock('Obtained', card.obtained)}
+                    {makeBlock('Effect', card.effect)}
                 </div>
             </div>
         </div>
-
     )
 }
 

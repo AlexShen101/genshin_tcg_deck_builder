@@ -22,7 +22,7 @@ const deckSlice = createSlice({
         },
         deleteDeck: (state, action) => {
             const id = action.payload
-            state = state.filter(deck => deck.id !== id)
+            state = state.filter((deck) => deck.id !== id)
             localStorage.setItem('decks', JSON.stringify(state))
             return state
         },
@@ -36,7 +36,7 @@ const deckSlice = createSlice({
             }
             localStorage.setItem('decks', JSON.stringify(state))
             return newDeck
-        }
+        },
     },
 })
 

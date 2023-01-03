@@ -1,4 +1,4 @@
-import { createSlice, current } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { getCards } from './CardThunk'
 
 const cardSlice = createSlice({
@@ -21,7 +21,7 @@ const cardSlice = createSlice({
                     console.log(action)
                 }
             )
-    }
+    },
 })
 
 export default cardSlice.reducer

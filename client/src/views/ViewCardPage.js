@@ -19,9 +19,13 @@ const viewCardPage = (props) => {
     }, [allCards])
 
     if (card === undefined) {
-        return <div><h3>Loading</h3></div>
+        return (
+            <div>
+                <h3>Loading</h3>
+            </div>
+        )
     }
-    if (card.cardType === "character") {
+    if (card.cardType === 'character') {
         return <CharacterCard card={card} />
     } else {
         return <ActionCard card={card} />

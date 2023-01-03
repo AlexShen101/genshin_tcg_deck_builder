@@ -1,13 +1,11 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState } from 'react'
 import CardList from './CardList'
-import { useSelector, useDispatch } from 'react-redux'
 
 import ActionCard from './DeckSidebar/DeckActionCard'
 import CharacterCard from './DeckSidebar/DeckCharacterCard'
 
 // import { setCurrentDeck } from '../store/CurrentDeckReducer/CurrentDeckSlice'
 // import { addDeck } from '../store/DecksReducer/DeckThunk'
-
 
 const emptyDeck = {
     deckName: '',
@@ -24,7 +22,8 @@ const DeckEditor = (props) => {
     // all artifact cards can only be added twice, so if there are two artifact cards included then it is invalid
     let invalidCards = [...deck.characterCards]
     for (let i = 0; i < deck.actionCards.length; i++) {
-        if (deck.actionCards[i].count === 2) invalidCards.push(deck.actionCards[i])
+        if (deck.actionCards[i].count === 2)
+            invalidCards.push(deck.actionCards[i])
     }
     // window.localStorage.setItem(
     //     'deck',
@@ -112,13 +111,15 @@ const DeckEditor = (props) => {
     const downloadDeck = (deck, exportName) => {
         // there are many things that might go wrong with a file download
         // ideal sol would be "attempt" and catch errors
-        let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(deck));
-        let downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", exportName + ".json");
-        document.body.appendChild(downloadAnchorNode); // required for firefox
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
+        let dataStr =
+            'data:text/json;charset=utf-8,' +
+            encodeURIComponent(JSON.stringify(deck))
+        let downloadAnchorNode = document.createElement('a')
+        downloadAnchorNode.setAttribute('href', dataStr)
+        downloadAnchorNode.setAttribute('download', exportName + '.json')
+        document.body.appendChild(downloadAnchorNode) // required for firefox
+        downloadAnchorNode.click()
+        downloadAnchorNode.remove()
     }
 
     // This following section will display the form that takes the input from the user.
@@ -138,7 +139,10 @@ const DeckEditor = (props) => {
                             name="deck_name"
                             placeholder="Enter Deck Name"
                             onChange={(e) => {
-                                let newDeck = { ...deck, deckName: e.target.value }
+                                let newDeck = {
+                                    ...deck,
+                                    deckName: e.target.value,
+                                }
                                 setDeck(newDeck)
                                 // dispatch(setCurrentDeck(newDeck))
                             }}
@@ -156,7 +160,10 @@ const DeckEditor = (props) => {
                             </button>
                             <button
                                 className="btn btn-danger"
-                                onClick={(e) => setDeck(emptyDeck)}>Clear Deck</button>
+                                onClick={(e) => setDeck(emptyDeck)}
+                            >
+                                Clear Deck
+                            </button>
                         </div>
                         <button
                             className="btn btn-info"
@@ -164,21 +171,34 @@ const DeckEditor = (props) => {
                                 e.preventDefault()
                                 downloadDeck(deck, deck.deckName)
                             }}
-                        >Download Deck</button>
+                        >
+                            Download Deck
+                        </button>
                     </form>
                     <div className="mt-4">
                         <h3 className="mt-4">Character Cards</h3>
-                        {deck.characterCards.map((card) =>
-                            <CharacterCard card={card} removeCardFromDeck={removeCardFromDeck} />)}
+                        {deck.characterCards.map((card) => (
+                            <CharacterCard
+                                card={card}
+                                removeCardFromDeck={removeCardFromDeck}
+                            />
+                        ))}
                         <h3 className="mt-4">Action Cards</h3>
-                        {deck.actionCards.map((card) =>
-                            <ActionCard card={card} removeCardFromDeck={removeCardFromDeck} />)}
+                        {deck.actionCards.map((card) => (
+                            <ActionCard
+                                card={card}
+                                removeCardFromDeck={removeCardFromDeck}
+                            />
+                        ))}
                     </div>
-
                 </div>
                 {/* This cardlist takes right hand column */}
                 <div className="col-sm-8">
-                    <CardList onClickAction={addCardToDeck} characters={deck.characterCards} invalidCards={invalidCards} />
+                    <CardList
+                        onClickAction={addCardToDeck}
+                        characters={deck.characterCards}
+                        invalidCards={invalidCards}
+                    />
                 </div>
             </div>
         </div>

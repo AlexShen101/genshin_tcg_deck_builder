@@ -28,14 +28,18 @@ const mapCardToImageFolder = {
 const fetchAllCards = async () => {
     let allCards = []
     // connect to backend for image urls
-    const imageUrlsResponse = await fetch(`http://localhost:5000/firebaseImageUrls`)
+    const imageUrlsResponse = await fetch(
+        `http://localhost:5000/firebaseImageUrls`
+    )
     const imageUrls = await imageUrlsResponse.json()
     for (const cardType of cardsToFetch) {
         const fetchUrl = `http://localhost:5000/${cardType}`
         const response = await fetch(fetchUrl)
         const outputCards = await response.json()
         for (const card of outputCards) {
-            const cardUrl = imageUrls.find(url => url.image_id === card.image_id)
+            const cardUrl = imageUrls.find(
+                (url) => url.image_id === card.image_id
+            )
             const newCard = {
                 ...card,
                 imageUrl: cardUrl ? cardUrl.icon_imageUrl : undefined,

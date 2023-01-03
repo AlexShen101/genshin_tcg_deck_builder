@@ -2,7 +2,7 @@ import React from 'react'
 
 import { v4 as uuidv4 } from 'uuid'
 
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import DeckEditor from '../components/DeckEditor'
@@ -10,7 +10,7 @@ import { addDeck } from '../store/DecksReducer/DeckSlice'
 
 // See CurrentDeckSlice for the deck state structure
 const CreateDeckPage = () => {
-    console.log("rendering create deck page")
+    console.log('rendering create deck page')
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const addMyDeck = async (deck) => {
@@ -30,8 +30,8 @@ const CreateDeckPage = () => {
 
         const newDeck = { ...deck, id: uuidv4() }
         dispatch(addDeck(newDeck))
-        console.log("here")
-        return navigate("/dashboard")
+        console.log('here')
+        return navigate('/dashboard')
     }
 
     const newDeck = {
