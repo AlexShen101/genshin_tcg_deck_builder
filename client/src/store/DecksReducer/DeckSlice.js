@@ -1,61 +1,44 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getDecks, getDeck, addDeck, deleteDeck, updateDeck } from './DeckThunk'
+
+const getInitialState = () => {
+    let savedDecks = localStorage.getItem('decks')
+    console.log(savedDecks)
+    console.log(JSON.parse(savedDecks))
+    if (savedDecks == null) {
+        return []
+    } else {
+        return JSON.parse(savedDecks)
+    }
+}
 
 const deckSlice = createSlice({
     name: 'decks',
-    initialState: [],
-    reducers: {},
-    extraReducers: (builder) => {
-        builder
-            .addCase(getDecks.fulfilled, (state, action) => {
-                state = action.payload
-                return state
-            })
-            .addCase(getDeck.fulfilled, (state, action) => {
-                console.log(action.payload)
-            })
-            .addCase(addDeck.fulfilled, (state, action) => {
-                state.push(action.payload)
-            })
-            .addCase(deleteDeck.fulfilled, (state, action) => {
-                // action payload is the id of the deck deleted
-                console.log("new state")
-                let id = action.payload
-                state = state.filter((deck) => {
-                    return deck._id !== id
-                })
-                return state
-            })
-            .addCase(updateDeck.fulfilled, (state, action) => {
-                let id = action.payload._id
-                let newDeck = action.payload
-                for (let i = 0; i < state.length; i++) {
-                    if (state[i]._id === id) {
-                        state[i] = newDeck
-                    }
+    initialState: getInitialState(),
+    reducers: {
+        addDeck: (state, action) => {
+            state.push(action.payload)
+            localStorage.setItem('decks', JSON.stringify(state))
+            return state
+        },
+        deleteDeck: (state, action) => {
+            const id = action.payload
+            state = state.filter(deck => deck.id !== id)
+            localStorage.setItem('decks', JSON.stringify(state))
+            return state
+        },
+        updateDeck: (state, action) => {
+            const id = action.payload.id
+            const newDeck = action.payload
+            for (var i = 0; i < state.length; i++) {
+                if (state[i].id === id) {
+                    state[i] = newDeck
                 }
-                return state
-            })
-            // .addMatcher(
-            //     // if the action name ends with rejected, perform the following function
-            //     (action) => {
-            //         if (action.type) return action.type.endsWith('pending')
-            //     },
-            //     (state, action) => {
-            //         return "loading"
-            //     }
-            // )
-            .addMatcher(
-                // if the action name ends with rejected, perform the following function
-                (action) => {
-                    if (action.type) return action.type.endsWith('rejected')
-                },
-                (state, action) => {
-                    console.log(action.type + ' was rejected')
-                    console.log(action)
-                }
-            )
+            }
+            localStorage.setItem('decks', JSON.stringify(state))
+            return newDeck
+        }
     },
 })
 
+export const { addDeck, deleteDeck, updateDeck } = deckSlice.actions
 export default deckSlice.reducer

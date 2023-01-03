@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { getDecks, deleteDeck, editDeck } from '../store/DecksReducer/DeckThunk'
+import { deleteDeck, updateDeck } from '../store/DecksReducer/DeckSlice'
 
 const MyDecksPage = () => {
     console.log("rendering myDecksPage")
@@ -21,16 +21,16 @@ const MyDecksPage = () => {
     const makeDeckList = (inputDecks) => {
         return inputDecks.map((deck) => {
             return (
-                <tr key={`${deck._id}`} className="">
+                <tr key={`${deck.id}`} className="">
                     <th className="">
                         <p className="deck-page-deck-title">{deck.deckName}</p>
                     </th>
                     <th className="d-flex justify-content-between">
-                        <Link to={`/edit_deck/${deck._id}`}
+                        <Link to={`/edit_deck/${deck.id}`}
                             className="nav-link">
                             Edit Deck
                         </Link>
-                        <button className="btn btn-danger mx-2" onClick={() => dispatch(deleteDeck(deck._id))}>
+                        <button className="btn btn-danger mx-2" onClick={() => dispatch(deleteDeck(deck.id))}>
                             {' '}
                             Delete Deck
                         </button>

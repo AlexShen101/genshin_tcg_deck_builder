@@ -1,11 +1,12 @@
 import React from 'react'
-import DeckEditor from '../components/DeckEditor'
+
+import { v4 as uuidv4 } from 'uuid'
+
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import { getCards } from '../store/CardsReducer/CardThunk'
-import { addDeck } from '../store/DecksReducer/DeckThunk'
-import { setCurrentDeck } from '../store/CurrentDeckReducer/CurrentDeckSlice'
+import DeckEditor from '../components/DeckEditor'
+import { addDeck } from '../store/DecksReducer/DeckSlice'
 
 // See CurrentDeckSlice for the deck state structure
 const CreateDeckPage = () => {
@@ -15,18 +16,20 @@ const CreateDeckPage = () => {
     const addMyDeck = async (deck) => {
         console.log('start submit deck action')
         // requirements: 3 chars, 30 action characters, name exists
-        const deckCopy = { ...deck }
-        if (deckCopy.deckName === '') {
+
+        if (deck.deckName === '') {
             console.log('Deck needs to have a name!')
             return
-        } else if (deckCopy.length !== 30) {
+        } else if (deck.length !== 30) {
             console.log('Deck needs to have 30 action cards!')
             return
-        } else if (deckCopy.characterCards.length !== 3) {
+        } else if (deck.characterCards.length !== 3) {
             console.log('Deck needs to have 3 character cards!')
             return
         }
-        dispatch(addDeck(deck))
+
+        const newDeck = { ...deck, id: uuidv4() }
+        dispatch(addDeck(newDeck))
         console.log("here")
         return navigate("/dashboard")
     }

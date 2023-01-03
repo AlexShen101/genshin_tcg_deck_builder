@@ -2,10 +2,9 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { getDecks, updateDeck } from '../store/DecksReducer/DeckThunk'
+import { updateDeck } from '../store/DecksReducer/DeckSlice'
 // import { setCurrentDeck } from '../store/CurrentDeckReducer/CurrentDeckSlice'
 import DeckEditor from '../components/DeckEditor'
-import { setCurrentDeck } from '../store/CurrentDeckReducer/CurrentDeckSlice';
 
 // See CurrentDeckSlice for the deck state structure
 const EditDeckPage = (props) => {
@@ -20,14 +19,10 @@ const EditDeckPage = (props) => {
         return state.decks
     })
 
-    useEffect(() => {
-        dispatch(getDecks())
-    }, [])
-
     if (decks === "loading") {
         return <p>Loading ...</p>
     }
-    const thisDeck = decks.find(deck => deck._id === deckId)
+    const thisDeck = decks.find(deck => deck.id === deckId)
     // dispatch(setCurrentDeck(thisDeck))
 
     const editMydeck = async (deck) => {
@@ -44,7 +39,7 @@ const EditDeckPage = (props) => {
             console.log('Deck needs to have 3 character cards!')
             return
         }
-        dispatch(updateDeck({ id: deck._id, deck: deck }))
+        dispatch(updateDeck({ id: deck.id, deck: deck }))
         return navigate("/dashboard")
         // dispatch(setCurrentDeck(null))
     }

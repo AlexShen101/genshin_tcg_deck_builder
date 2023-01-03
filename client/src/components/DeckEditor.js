@@ -15,11 +15,8 @@ const emptyDeck = {
     actionCards: [],
     length: 0,
 }
-// See CurrentDeckSlice for the deck state structure
+
 const DeckEditor = (props) => {
-    // let deck = useSelector((state) => {
-    //     return state.currentDeck
-    // })
     const [deck, setDeck] = useState(props.currentDeck)
 
     // invalid cards are cards that can't be added to the deck anymore (becuase max value has been reached. this ignores talent cards, which are handled separately)
