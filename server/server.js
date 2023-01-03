@@ -22,7 +22,6 @@ app.use(require("./routes/talentCards.js"));
 app.use(require("./routes/weaponCards.js"));
 app.use(require("./routes/decks.js"));
 app.use(require("./routes/firebaseImageUrls.js"));
-app.use(require("./routes/users.js"))
 
 app.listen(port, () => {
   // perform a database connection when server starts

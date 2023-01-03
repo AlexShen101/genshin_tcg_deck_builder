@@ -7,29 +7,20 @@ import { NavLink } from 'react-router-dom'
 
 // Here, we display our Navbar
 const Navbar = () => {
-    const user = useSelector((state) => state.user)
-    let links = []
-
-    useEffect(() => {
-        if (user === null) {
-            links = []
-        } else {
-            links = [
-                {
-                    to: '/create_deck',
-                    label: 'Create Deck',
-                },
-                {
-                    to: '/dashboard',
-                    label: 'My Deck',
-                },
-                {
-                    to: '/view_all_cards',
-                    label: 'All Cards',
-                },
-            ]
-        }
-    }, [user])
+    let links = [
+        {
+            to: '/create_deck',
+            label: 'Create Deck',
+        },
+        {
+            to: '/dashboard',
+            label: 'My Deck',
+        },
+        {
+            to: '/view_all_cards',
+            label: 'All Cards',
+        },
+    ]
 
     return (
         <div className='mb-4'>
@@ -57,7 +48,7 @@ const Navbar = () => {
                     )
                 })}
 
-                {links.length !== 0 && <button
+                <button
                     className="navbar-toggler"
                     type="button"
                     data-bs-toggle="collapse"
@@ -67,7 +58,7 @@ const Navbar = () => {
                     aria-label="Toggle navigation"
                 >
                     <span className="navbar-toggler-icon"></span>
-                </button>}
+                </button>
             </nav>
         </div>
     )
