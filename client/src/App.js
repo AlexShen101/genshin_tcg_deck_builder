@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 // We components needed
 import Navbar from './components/Navbar'
@@ -35,7 +35,7 @@ const App = () => {
             <Debug />
             <Navbar />
             <Routes>
-                {/* <Route path="/" element={} /> */}
+                <Route path="/" element={<Navigate to="/dashboard" />} />
                 <Route
                     exact
                     path="/view_all_cards"
