@@ -45,7 +45,7 @@ const EditDeckPage = (props) => {
             return
         }
         dispatch(updateDeck({ id: deck._id, deck: deck }))
-        return navigate("/my_decks")
+        return navigate("/dashboard")
         // dispatch(setCurrentDeck(null))
     }
 

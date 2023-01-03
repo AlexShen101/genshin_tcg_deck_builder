@@ -11,13 +11,11 @@ const cardsToFetch = [
     'weaponCards',
 ]
 
-import Card from './Card'
+import CardIcon from './CardIcon'
 
 // handles rendering and functions for the card displayer
 const CardList = (props) => {
-    let cards = useSelector((state) => {
-        return state.cards
-    })
+    let cards = useSelector((state) => state.cards)
     const [cardsToDisplay, setCardsToDisplay] = useState(cards)
     const [typeFilter, setTypeFilter] = useState('artifactCards')
     const [search, setSearch] = useState('')
@@ -30,25 +28,22 @@ const CardList = (props) => {
         let newCards = cards.filter((card) => {
             if (card.cardType == typeFilter.replace('Cards', '')) {
                 if (card.name.toLowerCase().includes(search.toLowerCase())) {
-                    console.log(card.name)
                     return true
                 }
             }
             return false
         })
-        console.log("here")
-        if (typeFilter.replace('Cards', '') === 'talent') {
+        if (typeFilter.replace('Cards', '') === 'talent' && props.characters) {
             newCards = newCards.filter((card) => {
                 let checkIfValid = props.characters.find((characterCard) => {
                     return card.name.includes(characterCard.name)
                 })
-                console.log(checkIfValid)
                 if (!checkIfValid) return false
                 return true
             })
         }
         newCards = newCards.filter((card) => {
-            if (props.invalidCards.length !== 0) {
+            if (props.invalidCards && props.invalidCards.length !== 0) {
                 let checkIfInvalid = props.invalidCards.find((invalidCard) => {
                     return card._id === invalidCard._id
                 })
@@ -56,8 +51,6 @@ const CardList = (props) => {
             }
             return true
         })
-
-
         setCardsToDisplay(newCards)
     }, [typeFilter, search, cards, props.invalidCards, props.characters])
     // This method will map out the cards on the table
@@ -70,7 +63,7 @@ const CardList = (props) => {
                         onClick={() => onClickAction(card)}
                         key={`card_button_wrapper_${card._id}`}
                     >
-                        <Card card={card} />
+                        <CardIcon card={card} />
                     </button>
                 )
             } else {
@@ -80,7 +73,7 @@ const CardList = (props) => {
                         key={`button_${card._id}`}
                         to={`/view_card/${typeFilter}/${card._id}`}
                     >
-                        <Card card={card} key={card._id} />
+                        <CardIcon card={card} key={card._id} />
                     </Link>
                 )
             }
@@ -102,11 +95,11 @@ const CardList = (props) => {
                             placeholder="Search for cards here"
                             onChange={(event) => setSearch(event.target.value)}
                         ></input>
-                        <div className="container-fluid d-flex justify-content-center">
+                        <div className="d-flex justify-content-between align-items-center flex-wrap">
                             {cardsToFetch.map((item) => {
                                 return (
                                     <button
-                                        className={item === typeFilter ? "btn btn-outline- btn-primary-active col-sm m-1" : "btn btn-outline-primary col-sm m-1"}
+                                        className={`btn m-1 w-25 ${item === typeFilter ? "btn-primary-active" : "btn-outline-primary"}`}
                                         onClick={() => {
                                             setTypeFilter(item)
                                             setSearch('')

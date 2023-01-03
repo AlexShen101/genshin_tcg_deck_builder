@@ -28,7 +28,7 @@ const CreateDeckPage = () => {
         }
         dispatch(addDeck(deck))
         console.log("here")
-        return navigate("/my_decks")
+        return navigate("/dashboard")
     }
 
     const newDeck = {

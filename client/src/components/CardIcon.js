@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import queryImage from '../firebase/FirebaseQueryImage'
 
-const Card = (props) => {
+const CardIcon = (props) => {
     return (
         <div className="card-container text-center">
             <>
@@ -18,4 +18,4 @@ const Card = (props) => {
     )
 }
 
-export default Card
+export default CardIcon

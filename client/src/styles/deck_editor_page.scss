@@ -1,0 +1,76 @@
+.deck-card-container {
+    width: 100%;
+    height: 50px;
+    margin-bottom: 1rem;
+}
+
+.deck-card-image {
+    object-fit: cover;
+    /* Do not scale the image */
+    object-position: center;
+    /* Center the image within the element */
+    height: 50px;
+    width: 100%;
+    overflow: hidden;
+    opacity: 0.2;
+}
+
+.deck-card-overlay {
+    position: relative;
+    top: -50px;
+    right: -2px;
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    text-align: left;
+}
+
+.deck-card-button {
+    height: 100%;
+}
+
+.deck-card-name {
+    width: 75%;
+    margin: 0px;
+    font-size: clamp(12px, 2vw, 16px);
+
+    // make text add ... if over 2 lines
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* number of lines to show */
+
+    // backup solution to force 2 lines if webkit fails
+    line-height: 20px;
+    max-height: 40px;
+}
+
+.deck-card-count {
+    font-weight: bold;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 8px;
+}
+
+.editable-title {
+    border-color: transparent;
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+
+     // make text add ... if over 2 lines
+     overflow: hidden;
+     text-overflow: ellipsis;
+}
+
+.editable-title:hover {
+    border-color: transparent;
+}
+
+.deck-page-deck-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60vw;
+}
