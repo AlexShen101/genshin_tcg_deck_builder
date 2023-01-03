@@ -1,64 +1,54 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-import queryImage from '../firebase/FirebaseQueryImage'
-
-const mapCardToImageFolder = {
-    characterCards: 'characters',
-    artifactCards: 'weapons_artifacts',
-    eventCards: 'event',
-    supportCards: 'support',
-    talentCards: 'talents',
-    weaponCards: 'weapons_artifacts',
-}
+import CharacterCard from '../components/CardDisplays/CharacterCard'
+import ActionCard from '../components/CardDisplays/ActionCard'
 
 // handles rendering and functions for the card displayer
 const viewCardPage = (props) => {
+    const allCards = useSelector((state) => {
+        return state.cards
+    })
     const [card, setCard] = useState()
-    const [imageUrl, setImageUrl] = useState()
+    console.log(card)
 
-    // This method fetches the relevant card types from the database.
     useEffect(() => {
-        // card should either be "" or one of the elements in cardsToFetch
-        const getCard = async (cardType, id) => {
-            let allCards = []
-            const fetchUrl = `http://localhost:5000/${cardType}/${id}`
-            const response = await fetch(fetchUrl)
-            if (!response.ok) {
-                const message = `An error occurred: ${response.statusText}`
-                window.alert(message)
-                return
-            }
-            let outputCard = await response.json()
-            let imageFolder = mapCardToImageFolder[props.params.cardType]
-            queryImage(imageFolder, outputCard.image_id, setImageUrl)
+        const thisCard = allCards.find((card) => card._id === props.params.id)
+        setCard(thisCard)
+    }, [allCards])
 
-            setCard(outputCard)
-        }
-        getCard(props.params.cardType, props.params.id)
-        return
-    }, [])
-
+    if (card === undefined) {
+        return <div><h3>Loading</h3></div>
+    }
+    if (card.cardType === "character") {
+        return <CharacterCard card={card} />
+    } else {
+        return <ActionCard card={card} />
+    }
     // This following section will display the table with the cards of individuals.
-    return (
-        <div>
-            <h3>Card View</h3>
-            <div>
-                {card != null ? (
-                    <>
-                        <img src={imageUrl} alt={imageUrl}></img>
-                        <h3>{card.name}</h3>
-                        <p>{card.description}</p>
-                        <p>{card.cost}</p>
-                        <p>{card.obtained}</p>
-                        <p>{card.effect}</p>
-                    </>
-                ) : (
-                    <h3>Loading...</h3>
-                )}
-            </div>
-        </div>
-    )
+    // return (
+    //     <div className="container-fluid">
+    //         <div className="row">
+    //             {card != null ? (
+    //                 <>
+    //                     <div className="col-4">
+    //                         <h3>{card.name}</h3>
+    //                         <img width="100%" src={card.highResImageUrl} alt={card.imageUrl}></img>
+    //                     </div>
+    //                     <div className="col-8">
+    //                         {card.cost && <p>Cost: {card.cost}</p>}
+    //                         <p>{card.effect}</p>
+    //                         <p>{card.obtained}</p>
+    //                         <p>{card.description}</p>
+    //                     </div>
+    //                 </>
+    //             ) : (
+    //                 <h3>Loading...</h3>
+    //             )}
+    //         </div>
+    //     </div>
+    // )
 }
 
 const withParams = (Component) => {

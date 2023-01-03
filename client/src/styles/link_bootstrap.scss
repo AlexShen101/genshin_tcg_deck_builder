@@ -6,3 +6,11 @@ a {
 a:hover {
     color: lighten($color: $primary, $amount: 10);
 }
+
+.nav-link {
+    color: $primary;
+}
+
+.nav-link:hover {
+    color: lighten($color: $primary, $amount: 10);
+}

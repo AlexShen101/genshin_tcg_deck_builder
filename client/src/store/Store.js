@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import decksReducer from './DecksReducer/DeckSlice'
 import currentDeckReducer from './CurrentDeckReducer/CurrentDeckSlice'
 import cardsReducer from './CardsReducer/CardSlice'
+import userReducer from './UserReducer/UserSlice'
 
 // combine reducers here
 const store = configureStore({
@@ -10,6 +11,7 @@ const store = configureStore({
         decks: decksReducer,
         currentDeck: currentDeckReducer,
         cards: cardsReducer,
+        user: userReducer
     },
 })
 

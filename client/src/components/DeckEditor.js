@@ -2,12 +2,12 @@ import React, { useState, useMemo } from 'react'
 import CardList from './CardList'
 import { useSelector, useDispatch } from 'react-redux'
 
-import Card from './Card'
+import ActionCard from './DeckSidebar/DeckActionCard'
+import CharacterCard from './DeckSidebar/DeckCharacterCard'
 
 // import { setCurrentDeck } from '../store/CurrentDeckReducer/CurrentDeckSlice'
-import { addDeck } from '../store/DecksReducer/DeckThunk'
+// import { addDeck } from '../store/DecksReducer/DeckThunk'
 
-import { BsFillTrashFill } from 'react-icons/bs'
 
 const emptyDeck = {
     deckName: '',
@@ -112,25 +112,18 @@ const DeckEditor = (props) => {
         // dispatch(setCurrentDeck(newDeck))
     }
 
-    const printCard = (card) => {
-        return (
-            <div key={`${card.name}_div`}>
-                <img src={card.highresUrl}></img>
-                {card.count == 2 ?
-                    <p key={`${card.name}_text`}>{card.name} x 2</p>
-                    : <p key={`${card.name}_text`}>{card.name}</p>
-                }
-
-                <button
-                    className="btn btn-outline-danger"
-                    key={`${card.name}_button`}
-                    onClick={() => removeCardFromDeck(card)}
-                >
-                    <BsFillTrashFill />
-                </button>
-            </div>
-        )
+    const downloadDeck = (deck, exportName) => {
+        // there are many things that might go wrong with a file download
+        // ideal sol would be "attempt" and catch errors
+        let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(deck));
+        let downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", exportName + ".json");
+        document.body.appendChild(downloadAnchorNode); // required for firefox
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
     }
+
     // This following section will display the form that takes the input from the user.
     return (
         <div className="container-fluid">
@@ -146,6 +139,7 @@ const DeckEditor = (props) => {
                         <input
                             className="form-control editable-title"
                             name="deck_name"
+                            placeholder="Enter Deck Name"
                             onChange={(e) => {
                                 let newDeck = { ...deck, deckName: e.target.value }
                                 setDeck(newDeck)
@@ -153,23 +147,37 @@ const DeckEditor = (props) => {
                             }}
                             value={deck.deckName}
                         ></input>
+                        <div className="d-flex flex-wrap justify-content-between">
+                            <button
+                                className="btn btn-primary"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    props.submitDeck(deck)
+                                }}
+                            >
+                                Save Deck
+                            </button>
+                            <button
+                                className="btn btn-danger"
+                                onClick={(e) => setDeck(emptyDeck)}>Clear Deck</button>
+                        </div>
                         <button
-                            className="btn btn-primary"
+                            className="btn btn-info"
                             onClick={(e) => {
                                 e.preventDefault()
-                                props.submitDeck(deck)
+                                downloadDeck(deck, deck.deckName)
                             }}
-                        >
-                            Save
-                        </button>
-                        <button
-                            className="btn btn-danger"
-                            onClick={(e) => setDeck(emptyDeck)}>Clear Deck</button>
+                        >Download Deck</button>
                     </form>
-                    <p>Character Cards</p>
-                    {deck.characterCards.map((card) => printCard(card))}
-                    <p>Action Cards</p>
-                    {deck.actionCards.map((card) => printCard(card))}
+                    <div className="mt-4">
+                        <h3 className="mt-4">Character Cards</h3>
+                        {deck.characterCards.map((card) =>
+                            <CharacterCard card={card} removeCardFromDeck={removeCardFromDeck} />)}
+                        <h3 className="mt-4">Action Cards</h3>
+                        {deck.actionCards.map((card) =>
+                            <ActionCard card={card} removeCardFromDeck={removeCardFromDeck} />)}
+                    </div>
+
                 </div>
                 {/* This cardlist takes right hand column */}
                 <div className="col-sm-8">

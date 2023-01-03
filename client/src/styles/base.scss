@@ -1,26 +1,19 @@
-$primary: rgb(115, 107, 219);
+$primary: rgb(154, 147, 255);
+$dark-5: rgb(45, 45, 45);
 
 @import './btn_bootstrap.scss';
 @import './link_bootstrap.scss';
-
-
-// [class*='col-'] {
-//     display: flex;
-// }
-
-// .card-container {
-//     width: fit-content;
-//     margin: 0px;
-// }
+@import './deck_editor_page.scss';
+@import './card_display_page.scss';
 
 .card-text {
     max-width: 123px;
 }
 
-.editable-title {
-    border-color: transparent;
+.color-primary {
+    color: $primary;
 }
 
-.editable-title:hover {
-    border-color: transparent;
+.bg-dark-5 {
+    background-color: $dark-5;
 }
