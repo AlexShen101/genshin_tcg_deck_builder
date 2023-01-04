@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { ToastDefaultContainer } from '../components/toast/ToastContainerDesigns'
-import { makeToastError } from '../components/toast/ToastDesigns'
+import { makeToastError, makeToastConfirmation } from '../components/toast/ToastDesigns'
 import { addDeck } from '../store/DecksReducer/DeckSlice'
 
 const ImportDecksPage = () => {
@@ -28,6 +28,7 @@ const ImportDecksPage = () => {
                     } else {
                         dispatch(addDeck(json))
                     }
+                    makeToastConfirmation('Successfully added decks')
                 } catch (e) {
                     if (e instanceof SyntaxError) {
                         makeToastError('Please upload a valid JSON file!')

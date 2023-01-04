@@ -12,3 +12,16 @@ export const makeToastError = (message) => {
         theme: "dark",
     })
 }
+
+export const makeToastConfirmation = (message) => {
+    return toast.success(message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+    })
+}

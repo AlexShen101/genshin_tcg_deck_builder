@@ -17,7 +17,6 @@ const deckSlice = createSlice({
             const newDeck = action.payload
             for (const deck of state) {
                 if (newDeck.id === deck.id) {
-                    console.log("found matching id: not adding")
                     return state
                 }
             }

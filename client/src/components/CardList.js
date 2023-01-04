@@ -22,7 +22,6 @@ const CardList = (props) => {
 
     // filter cards every time typeFilter or search is changed
     useEffect(() => {
-        console.log('useeffect triggered')
         if (cards == null) return
         else if (cards == 'loading') return
         let newCards = cards.filter((card) => {
@@ -99,11 +98,10 @@ const CardList = (props) => {
                             {cardsToFetch.map((item) => {
                                 return (
                                     <button
-                                        className={`btn m-1 w-25 ${
-                                            item === typeFilter
+                                        className={`btn m-1 w-25 ${item === typeFilter
                                                 ? 'btn-primary-active'
                                                 : 'btn-outline-primary'
-                                        }`}
+                                            }`}
                                         onClick={() => {
                                             setTypeFilter(item)
                                             setSearch('')
