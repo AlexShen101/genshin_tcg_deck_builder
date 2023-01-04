@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
-import CardList from './CardList'
 
+import { ToastDefaultContainer } from '../components/toast/ToastContainerDesigns'
+import { makeToastError } from '../components/toast/ToastDesigns'
+import CardList from './CardList'
 import ActionCard from './DeckSidebar/DeckActionCard'
 import CharacterCard from './DeckSidebar/DeckCharacterCard'
 
@@ -16,28 +18,24 @@ const emptyDeck = {
 
 const DeckEditor = (props) => {
     const [deck, setDeck] = useState(props.currentDeck)
+    const [error, setError] = useState("")
 
     // invalid cards are cards that can't be added to the deck anymore (becuase max value has been reached. this ignores talent cards, which are handled separately)
     // all character cards can only be added once, so they are all invalid
-    // all artifact cards can only be added twice, so if there are two artifact cards included then it is invalid
+    // all artifact cards can only be added twice, so if there are two artifact cards included then it is 
+    console.log(deck)
     let invalidCards = [...deck.characterCards]
     for (let i = 0; i < deck.actionCards.length; i++) {
         if (deck.actionCards[i].count === 2)
             invalidCards.push(deck.actionCards[i])
     }
-    // window.localStorage.setItem(
-    //     'deck',
-    //     typeof deck == 'object' ? JSON.stringify(deck) : deck
-    // )
 
-    // const dispatch = useDispatch()
     // add a given card to the deck or throw an alert otherwise
     const addCardToDeck = (card) => {
         // spreading is just used to clone the deck
         let newDeck = { ...deck }
 
         if (card.cardType === 'character') {
-            // TODO: reason why I'm only spreading characterCards vs the entire deck is that spreading the deck still keeps characterCards immutable
             let characterCards = [...newDeck.characterCards]
             // requirements: no duplicates and can't have more than 3 characters
             if (characterCards.length === 3) return
@@ -74,7 +72,6 @@ const DeckEditor = (props) => {
             }
         }
         setDeck(newDeck)
-        // dispatch(setCurrentDeck(newDeck))
     }
 
     const removeCardFromDeck = (card) => {
@@ -106,20 +103,6 @@ const DeckEditor = (props) => {
         }
         setDeck(newDeck)
         // dispatch(setCurrentDeck(newDeck))
-    }
-
-    const downloadDeck = (deck, exportName) => {
-        // there are many things that might go wrong with a file download
-        // ideal sol would be "attempt" and catch errors
-        let dataStr =
-            'data:text/json;charset=utf-8,' +
-            encodeURIComponent(JSON.stringify(deck))
-        let downloadAnchorNode = document.createElement('a')
-        downloadAnchorNode.setAttribute('href', dataStr)
-        downloadAnchorNode.setAttribute('download', exportName + '.json')
-        document.body.appendChild(downloadAnchorNode) // required for firefox
-        downloadAnchorNode.click()
-        downloadAnchorNode.remove()
     }
 
     // This following section will display the form that takes the input from the user.
@@ -165,15 +148,6 @@ const DeckEditor = (props) => {
                                 Clear Deck
                             </button>
                         </div>
-                        <button
-                            className="btn btn-info"
-                            onClick={(e) => {
-                                e.preventDefault()
-                                downloadDeck(deck, deck.deckName)
-                            }}
-                        >
-                            Download Deck
-                        </button>
                     </form>
                     <div className="mt-4">
                         <h3 className="mt-4">Character Cards</h3>

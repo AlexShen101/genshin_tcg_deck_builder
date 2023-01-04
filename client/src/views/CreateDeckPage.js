@@ -1,10 +1,10 @@
 import React from 'react'
-
 import { v4 as uuidv4 } from 'uuid'
-
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
+import { ToastDefaultContainer } from '../components/toast/ToastContainerDesigns'
+import { makeToastError } from '../components/toast/ToastDesigns'
 import DeckEditor from '../components/DeckEditor'
 import { addDeck } from '../store/DecksReducer/DeckSlice'
 
@@ -13,24 +13,24 @@ const CreateDeckPage = () => {
     console.log('rendering create deck page')
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
     const addMyDeck = async (deck) => {
         console.log('start submit deck action')
-        // requirements: 3 chars, 30 action characters, name exists
 
+        // requirements: 3 chars, 30 action characters, name exists
         if (deck.deckName === '') {
-            console.log('Deck needs to have a name!')
+            makeToastError('Deck needs to have a name!')
             return
         } else if (deck.length !== 30) {
-            console.log('Deck needs to have 30 action cards!')
+            makeToastError('Deck needs to have 30 action cards!')
             return
         } else if (deck.characterCards.length !== 3) {
-            console.log('Deck needs to have 3 character cards!')
+            makeToastError('Deck needs to have 3 character cards!')
             return
         }
 
         const newDeck = { ...deck, id: uuidv4() }
         dispatch(addDeck(newDeck))
-        console.log('here')
         return navigate('/dashboard')
     }
 
@@ -43,6 +43,7 @@ const CreateDeckPage = () => {
 
     return (
         <div>
+            <ToastDefaultContainer />
             <DeckEditor submitDeck={addMyDeck} currentDeck={newDeck} />
         </div>
     )

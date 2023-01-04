@@ -8,9 +8,9 @@ a:hover {
 }
 
 .nav-link {
-    color: $primary;
+    color: rgba(255, 255, 255, 0.645);
 }
 
 .nav-link:hover {
-    color: lighten($color: $primary, $amount: 10);
+    color: rgba(255, 255, 255, 0.89);
 }

@@ -11,6 +11,7 @@ import CreateDeckPage from './views/CreateDeckPage'
 import ViewCardPage from './views/ViewCardPage'
 import MyDecksPage from './views/MyDecksPage'
 import PageNotFound from './views/PageNotFound'
+import ImportDecksPage from './views/ImportDecksPage'
 
 import { useDispatch } from 'react-redux'
 import { getCards } from './store/CardsReducer/CardThunk'
@@ -39,6 +40,7 @@ const App = () => {
                 <Route path="/dashboard" element={<MyDecksPage />} />
                 <Route path="/create_deck" element={<CreateDeckPage />} />
                 <Route path="/edit_deck/:id" element={<EditDeckPage />} />
+                <Route path="/import_decks" element={<ImportDecksPage />} />
                 <Route path="*" element={<PageNotFound />}></Route>
             </Routes>
         </BrowserRouter>

@@ -5,6 +5,10 @@ $dark-5: rgb(45, 45, 45);
 @import './link_bootstrap.scss';
 @import './deck_editor_page.scss';
 @import './card_display_page.scss';
+@import './deck_page.scss';
+
+// toastify styling is for the toast alerts
+@import "react-toastify/dist/ReactToastify.css";
 
 .card-text {
     max-width: 123px;

@@ -17,6 +17,10 @@ const Navbar = () => {
             to: '/view_all_cards',
             label: 'All Cards',
         },
+        {
+            to: '/import_decks',
+            label: 'Import Decks'
+        }
     ]
 
     return (
@@ -30,17 +34,13 @@ const Navbar = () => {
                 {links.map((link) => {
                     return (
                         <div
-                            className="collapse navbar-collapse"
+                            className="collapse navbar-collapse justify-content-center"
                             id="navbarSupportedContent"
                             key={`navbar_${link.label}`}
                         >
-                            <ul className="navbar-nav ml-auto">
-                                <li className="nav-item">
-                                    <NavLink className="nav-link" to={link.to}>
-                                        {link.label}
-                                    </NavLink>
-                                </li>
-                            </ul>
+                            <NavLink className="nav-link" to={link.to}>
+                                {link.label}
+                            </NavLink>
                         </div>
                     )
                 })}

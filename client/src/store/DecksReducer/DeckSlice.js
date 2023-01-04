@@ -2,8 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const getInitialState = () => {
     let savedDecks = localStorage.getItem('decks')
-    console.log(savedDecks)
-    console.log(JSON.parse(savedDecks))
     if (savedDecks == null) {
         return []
     } else {
@@ -16,6 +14,13 @@ const deckSlice = createSlice({
     initialState: getInitialState(),
     reducers: {
         addDeck: (state, action) => {
+            const newDeck = action.payload
+            for (const deck of state) {
+                if (newDeck.id === deck.id) {
+                    console.log("found matching id: not adding")
+                    return state
+                }
+            }
             state.push(action.payload)
             localStorage.setItem('decks', JSON.stringify(state))
             return state
@@ -35,10 +40,14 @@ const deckSlice = createSlice({
                 }
             }
             localStorage.setItem('decks', JSON.stringify(state))
-            return newDeck
         },
+        setDecks: (state, action) => {
+            state = action.payload
+            localStorage.setItem('decks', JSON.stringify(state))
+            return state
+        }
     },
 })
 
-export const { addDeck, deleteDeck, updateDeck } = deckSlice.actions
+export const { addDeck, deleteDeck, updateDeck, setDecks } = deckSlice.actions
 export default deckSlice.reducer
