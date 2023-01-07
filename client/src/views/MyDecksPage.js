@@ -12,8 +12,10 @@ const MyDecksPage = () => {
     })
     const [search, setSearch] = useState('')
 
-    const decksToDisplay = decks.filter((deck) =>
-        deck.deckName && deck.deckName.toLowerCase().includes(search.toLowerCase())
+    const decksToDisplay = decks.filter(
+        (deck) =>
+            deck.deckName &&
+            deck.deckName.toLowerCase().includes(search.toLowerCase())
     )
 
     const clearAllDecks = () => {
@@ -29,7 +31,10 @@ const MyDecksPage = () => {
                         <p className="deck-page-deck-title">{deck.deckName}</p>
                     </th>
                     <th className="d-flex justify-content-end mw-50">
-                        <Link to={`/edit_deck/${deck.id}`} className="nav-link mx-2">
+                        <Link
+                            to={`/edit_deck/${deck.id}`}
+                            className="nav-link mx-2"
+                        >
                             Edit Deck
                         </Link>
                         <button
@@ -66,7 +71,7 @@ const MyDecksPage = () => {
         document.body.appendChild(downloadAnchorNode) // required for firefox
         downloadAnchorNode.click()
         downloadAnchorNode.remove()
-        makeToastConfirmation("Successfully downloaded decks")
+        makeToastConfirmation('Successfully downloaded decks')
     }
 
     // This following section will display the table with the records of individuals.
@@ -86,14 +91,14 @@ const MyDecksPage = () => {
                     className="btn btn-info"
                     onClick={(e) => {
                         e.preventDefault()
-                        downloadDeck(decks, "Genshin TCG Deck Builder Decks")
+                        downloadDeck(decks, 'Genshin TCG Deck Builder Decks')
                     }}
                 >
                     Download All Decks
                 </button>
-                <button
-                    className='btn btn-danger mx-4'
-                    onClick={clearAllDecks}>Clear All Decks</button>
+                <button className="btn btn-danger mx-4" onClick={clearAllDecks}>
+                    Clear All Decks
+                </button>
             </div>
             <table className="table table-striped">
                 <thead>

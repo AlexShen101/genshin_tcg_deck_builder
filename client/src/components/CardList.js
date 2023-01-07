@@ -98,10 +98,11 @@ const CardList = (props) => {
                             {cardsToFetch.map((item) => {
                                 return (
                                     <button
-                                        className={`btn m-1 w-25 ${item === typeFilter
-                                            ? 'btn-primary-active'
-                                            : 'btn-outline-primary'
-                                            }`}
+                                        className={`btn m-1 w-25 ${
+                                            item === typeFilter
+                                                ? 'btn-primary-active'
+                                                : 'btn-outline-primary'
+                                        }`}
                                         onClick={() => {
                                             setTypeFilter(item)
                                             setSearch('')
@@ -114,9 +115,11 @@ const CardList = (props) => {
                             })}
                         </div>
                     </div>
-                    {cardsToDisplay.length == 0 ?
+                    {cardsToDisplay.length == 0 ? (
                         <p>No Cards Found</p>
-                        : makeCardList(props.onClickAction)}
+                    ) : (
+                        makeCardList(props.onClickAction)
+                    )}
                 </>
             ) : (
                 // Code for when cardlist is still loading

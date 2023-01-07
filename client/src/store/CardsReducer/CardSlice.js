@@ -10,7 +10,7 @@ const cardSlice = createSlice({
         builder
             .addCase(getCards.fulfilled, (state, action) => {
                 state = action.payload
-                makeToastConfirmation("Successfully retrieved card data!")
+                makeToastConfirmation('Successfully retrieved card data!')
                 return state
             })
             .addMatcher(
@@ -18,7 +18,7 @@ const cardSlice = createSlice({
                     if (action.type) return action.type.endsWith('pending')
                 },
                 (state, action) => {
-                    return "loading"
+                    return 'loading'
                 }
             )
             .addMatcher(

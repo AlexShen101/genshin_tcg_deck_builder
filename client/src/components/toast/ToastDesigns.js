@@ -2,26 +2,26 @@ import { ToastContainer, toast } from 'react-toastify'
 
 export const makeToastError = (message) => {
     return toast.error(message, {
-        position: "top-right",
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: 'dark',
     })
 }
 
 export const makeToastConfirmation = (message) => {
     return toast.success(message, {
-        position: "top-right",
+        position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: 'dark',
     })
 }

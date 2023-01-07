@@ -19,7 +19,7 @@ const DeckEditor = (props) => {
 
     // invalid cards are cards that can't be added to the deck anymore (becuase max value has been reached. this ignores talent cards, which are handled separately)
     // all character cards can only be added once, so they are all invalid
-    // all artifact cards can only be added twice, so if there are two artifact cards included then it is 
+    // all artifact cards can only be added twice, so if there are two artifact cards included then it is
     let invalidCards = [...deck.characterCards]
     for (let i = 0; i < deck.actionCards.length; i++) {
         if (deck.actionCards[i].count === 2)

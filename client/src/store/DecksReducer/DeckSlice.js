@@ -23,15 +23,19 @@ const deckSlice = createSlice({
             }
             state.push(newDeck)
             localStorage.setItem('decks', JSON.stringify(state))
-            makeToastConfirmation("successfully added deck: " + newDeck.deckName)
+            makeToastConfirmation(
+                'successfully added deck: ' + newDeck.deckName
+            )
             return state
         },
         deleteDeck: (state, action) => {
             const id = action.payload
-            const removedDeck = state.find(deck => deck.id === id)
-            state = state.filter(deck => deck.id !== id)
+            const removedDeck = state.find((deck) => deck.id === id)
+            state = state.filter((deck) => deck.id !== id)
             localStorage.setItem('decks', JSON.stringify(state))
-            makeToastConfirmation("successfully deleted deck: " + removedDeck.deckName)
+            makeToastConfirmation(
+                'successfully deleted deck: ' + removedDeck.deckName
+            )
             return state
         },
         updateDeck: (state, action) => {
@@ -43,19 +47,20 @@ const deckSlice = createSlice({
                 }
             }
             localStorage.setItem('decks', JSON.stringify(state))
-            makeToastConfirmation("successfully updated deck: " + newDeck.deckName)
+            makeToastConfirmation(
+                'successfully updated deck: ' + newDeck.deckName
+            )
         },
         setDecks: (state, action) => {
             state = action.payload
             localStorage.setItem('decks', JSON.stringify(state))
             if (action.payload === []) {
-                makeToastConfirmation("Successfully removed all decks")
-            }
-            else {
-                makeToastConfirmation("Successfully set decks")
+                makeToastConfirmation('Successfully removed all decks')
+            } else {
+                makeToastConfirmation('Successfully set decks')
             }
             return state
-        }
+        },
     },
 })
 

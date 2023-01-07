@@ -19,8 +19,8 @@ const Navbar = () => {
         },
         {
             to: '/import_decks',
-            label: 'Import Decks'
-        }
+            label: 'Import Decks',
+        },
     ]
 
     return (
