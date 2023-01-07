@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { getCards } from './CardThunk'
+import { makeToastConfirmation } from '../../components/toast/ToastDesigns'
 
 const cardSlice = createSlice({
     name: 'cards',
@@ -9,16 +10,23 @@ const cardSlice = createSlice({
         builder
             .addCase(getCards.fulfilled, (state, action) => {
                 state = action.payload
+                makeToastConfirmation("Successfully retrieved card data!")
                 return state
             })
             .addMatcher(
-                // if the action name ends with rejected, perform the following function
+                (action) => {
+                    if (action.type) return action.type.endsWith('pending')
+                },
+                (state, action) => {
+                    return "loading"
+                }
+            )
+            .addMatcher(
                 (action) => {
                     if (action.type) return action.type.endsWith('rejected')
                 },
                 (state, action) => {
-                    console.log(action.type + ' was rejected')
-                    console.log(action)
+                    return []
                 }
             )
     },

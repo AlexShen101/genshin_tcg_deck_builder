@@ -1,29 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit'
-
-const autoError = (state, action) => {
-    // this looks through action, and gets the error property of the action object
-    const { error } = action
-
-    if (error) {
-        console.log(error)
-        return error
-    } else {
-        return state
-    }
-}
-
+import { createSlice, isRejected } from '@reduxjs/toolkit'
+import { makeToastError } from '../../components/toast/ToastDesigns'
 
 const errorSlice = createSlice({
     name: 'decks',
     initialState: null,
     reducers: {
-        // for manually creating a custom error
-        setError: (state, action) => {
-            state = action.payload
-            return state
-        },
     },
+    extraReducers: (builder) => {
+        builder.addMatcher(isRejected, (state, action) => {
+            state = action.error
+            console.log(action)
+            makeToastError(`Error: ${action.type.replace("/rejected", "")}  ${state.message.toLowerCase()}`)
+            // don't update state
+        })
+    }
 })
 
-export const { setError } = errorSlice.actions
 export default errorSlice.reducer

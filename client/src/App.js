@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 // We components needed
@@ -13,19 +13,31 @@ import MyDecksPage from './views/MyDecksPage'
 import PageNotFound from './views/PageNotFound'
 import ImportDecksPage from './views/ImportDecksPage'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getCards } from './store/CardsReducer/CardThunk'
+
+import { ToastDefaultContainer } from './components/toast/ToastContainerDesigns'
 
 import './styles/base.scss'
 
+let init = true
+
 const App = () => {
     const dispatch = useDispatch()
-    dispatch(getCards())
+
+    // runs only on first mount of App
+    useEffect(() => {
+        if (init) {
+            dispatch(getCards())
+            init = false
+        }
+    }, [init])
 
     return (
         <BrowserRouter>
             <Debug />
             <Navbar />
+            <ToastDefaultContainer />
             <Routes>
                 <Route path="/" element={<Navigate to="/dashboard" />} />
                 <Route

@@ -99,8 +99,8 @@ const CardList = (props) => {
                                 return (
                                     <button
                                         className={`btn m-1 w-25 ${item === typeFilter
-                                                ? 'btn-primary-active'
-                                                : 'btn-outline-primary'
+                                            ? 'btn-primary-active'
+                                            : 'btn-outline-primary'
                                             }`}
                                         onClick={() => {
                                             setTypeFilter(item)
@@ -114,7 +114,9 @@ const CardList = (props) => {
                             })}
                         </div>
                     </div>
-                    {makeCardList(props.onClickAction)}
+                    {cardsToDisplay.length == 0 ?
+                        <p>No Cards Found</p>
+                        : makeCardList(props.onClickAction)}
                 </>
             ) : (
                 // Code for when cardlist is still loading

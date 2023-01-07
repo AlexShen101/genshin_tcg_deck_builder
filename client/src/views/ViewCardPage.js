@@ -11,7 +11,6 @@ const viewCardPage = (props) => {
         return state.cards
     })
     const [card, setCard] = useState()
-    console.log(card)
 
     useEffect(() => {
         const thisCard = allCards.find((card) => card._id === props.params.id)

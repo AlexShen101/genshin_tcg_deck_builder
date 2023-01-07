@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { ToastDefaultContainer } from '../components/toast/ToastContainerDesigns'
 import { makeToastError, makeToastConfirmation } from '../components/toast/ToastDesigns'
 import { addDeck } from '../store/DecksReducer/DeckSlice'
 
@@ -13,14 +12,12 @@ const ImportDecksPage = () => {
 
         const file = e.target.file.files[0]
         if (file !== undefined) {
-            console.log(file)
             let reader = new FileReader()
             reader.readAsText(file)
 
             reader.onload = (e) => {
                 try {
                     let json = JSON.parse(e.target.result)
-                    console.log(json)
                     if (Array.isArray(json)) {
                         for (const item of json) {
                             dispatch(addDeck(item))
@@ -28,7 +25,7 @@ const ImportDecksPage = () => {
                     } else {
                         dispatch(addDeck(json))
                     }
-                    makeToastConfirmation('Successfully added decks')
+                    makeToastConfirmation('The import was successful!')
                 } catch (e) {
                     if (e instanceof SyntaxError) {
                         makeToastError('Please upload a valid JSON file!')
@@ -48,7 +45,6 @@ const ImportDecksPage = () => {
 
     return (
         <>
-            <ToastDefaultContainer />
             <div className='container'>
                 <form className="" onSubmit={uploadFile}>
                     <input type="file" className="form-control" name="file"></input>

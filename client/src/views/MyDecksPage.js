@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { deleteDeck, setDecks } from '../store/DecksReducer/DeckSlice'
+import { makeToastConfirmation } from '../components/toast/ToastDesigns'
 
 const MyDecksPage = () => {
-    console.log('rendering myDecksPage')
     const dispatch = useDispatch()
     const decks = useSelector((state) => {
         return state.decks
@@ -66,6 +66,7 @@ const MyDecksPage = () => {
         document.body.appendChild(downloadAnchorNode) // required for firefox
         downloadAnchorNode.click()
         downloadAnchorNode.remove()
+        makeToastConfirmation("Successfully downloaded decks")
     }
 
     // This following section will display the table with the records of individuals.

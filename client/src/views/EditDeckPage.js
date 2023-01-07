@@ -2,13 +2,11 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { ToastDefaultContainer } from '../components/toast/ToastContainerDesigns'
-import { makeToastError } from '../components/toast/ToastDesigns'
 import { updateDeck } from '../store/DecksReducer/DeckSlice'
 import DeckEditor from '../components/DeckEditor'
+import { makeToastError } from '../components/toast/ToastDesigns'
 
 const EditDeckPage = (props) => {
-    console.log('rendering edit deck page')
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -20,8 +18,6 @@ const EditDeckPage = (props) => {
     const thisDeck = decks.find((deck) => deck.id === deckId)
 
     const editMydeck = async (deck) => {
-        console.log('start submit deck action')
-
         // requirements: 3 chars, 30 action characters, name exists
         const deckCopy = { ...deck }
         if (deckCopy.deckName === '') {
@@ -41,7 +37,6 @@ const EditDeckPage = (props) => {
 
     return (
         <>
-            <ToastDefaultContainer />
             {thisDeck === undefined ? (
                 <p>No deck was found with this id...</p>
             ) : (

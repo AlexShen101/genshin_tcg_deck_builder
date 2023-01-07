@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { makeToastConfirmation } from '../../components/toast/ToastDesigns'
 
 const getInitialState = () => {
     let savedDecks = localStorage.getItem('decks')
@@ -20,14 +21,17 @@ const deckSlice = createSlice({
                     return state
                 }
             }
-            state.push(action.payload)
+            state.push(newDeck)
             localStorage.setItem('decks', JSON.stringify(state))
+            makeToastConfirmation("successfully added deck: " + newDeck.deckName)
             return state
         },
         deleteDeck: (state, action) => {
             const id = action.payload
-            state = state.filter((deck) => deck.id !== id)
+            const removedDeck = state.find(deck => deck.id === id)
+            state = state.filter(deck => deck.id !== id)
             localStorage.setItem('decks', JSON.stringify(state))
+            makeToastConfirmation("successfully deleted deck: " + removedDeck.deckName)
             return state
         },
         updateDeck: (state, action) => {
@@ -39,10 +43,17 @@ const deckSlice = createSlice({
                 }
             }
             localStorage.setItem('decks', JSON.stringify(state))
+            makeToastConfirmation("successfully updated deck: " + newDeck.deckName)
         },
         setDecks: (state, action) => {
             state = action.payload
             localStorage.setItem('decks', JSON.stringify(state))
+            if (action.payload === []) {
+                makeToastConfirmation("Successfully removed all decks")
+            }
+            else {
+                makeToastConfirmation("Successfully set decks")
+            }
             return state
         }
     },

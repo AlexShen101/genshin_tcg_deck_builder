@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 
-import { ToastDefaultContainer } from '../components/toast/ToastContainerDesigns'
-import { makeToastError } from '../components/toast/ToastDesigns'
 import CardList from './CardList'
 import ActionCard from './DeckSidebar/DeckActionCard'
 import CharacterCard from './DeckSidebar/DeckCharacterCard'
@@ -18,7 +16,6 @@ const emptyDeck = {
 
 const DeckEditor = (props) => {
     const [deck, setDeck] = useState(props.currentDeck)
-    const [error, setError] = useState("")
 
     // invalid cards are cards that can't be added to the deck anymore (becuase max value has been reached. this ignores talent cards, which are handled separately)
     // all character cards can only be added once, so they are all invalid
@@ -101,7 +98,6 @@ const DeckEditor = (props) => {
             }
         }
         setDeck(newDeck)
-        // dispatch(setCurrentDeck(newDeck))
     }
 
     // This following section will display the form that takes the input from the user.
@@ -126,7 +122,6 @@ const DeckEditor = (props) => {
                                     deckName: e.target.value,
                                 }
                                 setDeck(newDeck)
-                                // dispatch(setCurrentDeck(newDeck))
                             }}
                             value={deck.deckName}
                         ></input>
@@ -141,6 +136,7 @@ const DeckEditor = (props) => {
                                 Save Deck
                             </button>
                             <button
+                                type="button" // so it doesn't submit the form
                                 className="btn btn-danger"
                                 onClick={(e) => setDeck(emptyDeck)}
                             >
@@ -152,6 +148,7 @@ const DeckEditor = (props) => {
                         <h3 className="mt-4">Character Cards</h3>
                         {deck.characterCards.map((card) => (
                             <CharacterCard
+                                key={`${card.name}_character_card`}
                                 card={card}
                                 removeCardFromDeck={removeCardFromDeck}
                             />
@@ -159,6 +156,7 @@ const DeckEditor = (props) => {
                         <h3 className="mt-4">Action Cards</h3>
                         {deck.actionCards.map((card) => (
                             <ActionCard
+                                key={`${card.name}_action_card`}
                                 card={card}
                                 removeCardFromDeck={removeCardFromDeck}
                             />
