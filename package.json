@@ -1,0 +1,17 @@
+{
+  "name": "genshin-tcg-deck-builder",
+  "version": "1.0.0",
+  "description": "",
+  "engines": {
+    "node": "18.12.1"
+    },
+  "scripts": {
+    "client": "yarn workspace client start",
+    "server": "yarn workspace server start",
+    "start": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+  },
+  "workspaces": [""],
+  "dependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
