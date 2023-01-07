@@ -7,5 +7,4 @@ import firebaseConfig from './FirebaseConfig'
 // Initialize Firebase
 const firebase = initializeApp(firebaseConfig)
 const storage = getStorage()
-const storageRef = ref(storage)
 export { firebase, storage }

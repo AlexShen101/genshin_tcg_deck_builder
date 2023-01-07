@@ -4,9 +4,6 @@ import CardList from './CardList'
 import ActionCard from './DeckSidebar/DeckActionCard'
 import CharacterCard from './DeckSidebar/DeckCharacterCard'
 
-// import { setCurrentDeck } from '../store/CurrentDeckReducer/CurrentDeckSlice'
-// import { addDeck } from '../store/DecksReducer/DeckThunk'
-
 const emptyDeck = {
     deckName: '',
     characterCards: [],
@@ -138,7 +135,7 @@ const DeckEditor = (props) => {
                             <button
                                 type="button" // so it doesn't submit the form
                                 className="btn btn-danger"
-                                onClick={(e) => setDeck(emptyDeck)}
+                                onClick={() => setDeck(emptyDeck)}
                             >
                                 Clear Deck
                             </button>

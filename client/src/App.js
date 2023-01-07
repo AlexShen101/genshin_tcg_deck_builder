@@ -3,7 +3,6 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 // We components needed
 import Navbar from './components/Navbar'
-import Debug from './Debug'
 
 import ViewAllCardsPage from './views/ViewAllCardsPage'
 import EditDeckPage from './views/EditDeckPage'
@@ -13,7 +12,7 @@ import MyDecksPage from './views/MyDecksPage'
 import PageNotFound from './views/PageNotFound'
 import ImportDecksPage from './views/ImportDecksPage'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { getCards } from './store/CardsReducer/CardThunk'
 
 import { ToastDefaultContainer } from './components/toast/ToastContainerDesigns'
@@ -35,7 +34,6 @@ const App = () => {
 
     return (
         <BrowserRouter>
-            <Debug />
             <Navbar />
             <ToastDefaultContainer />
             <Routes>
