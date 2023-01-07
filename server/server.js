@@ -11,6 +11,7 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 app.use(require("./routes/artifactCards.js"));
 app.use(require("./routes/characterCards.js"));
@@ -31,4 +32,7 @@ app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
 
-
+// All other GET requests not handled before will return our React app
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+});

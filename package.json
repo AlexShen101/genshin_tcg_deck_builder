@@ -6,11 +6,11 @@
     "node": "18.12.1"
     },
   "scripts": {
-    "client": "yarn workspace client start",
-    "server": "yarn workspace server start",
-    "start": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "client": "cd client && yarn start",
+    "server": "cd server && yarn start",
+    "start": "concurrently --kill-others-on-fail \"yarn server\"",
+    "build": "cd client && yarn install && yarn build"
   },
-  "workspaces": [""],
   "dependencies": {
     "concurrently": "^7.6.0"
   }
