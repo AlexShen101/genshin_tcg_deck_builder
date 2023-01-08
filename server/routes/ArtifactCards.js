@@ -1,7 +1,5 @@
 const express = require("express");
-
-
-const eventCardRoutes = express.Router();
+const artifactCardRoutes = express.Router();
 
 // This will help us connect to the database
 const dbo = require("../db/conn");
@@ -11,10 +9,10 @@ const ObjectId = require("mongodb").ObjectId;
 
 
 // This section will help you get a list of all the records.
-eventCardRoutes.route("/eventCards").get((req, res) => {
+artifactCardRoutes.route("/artifactCards").get((req, res) => {
   let db_connect = dbo.getDb("stored_data");
   db_connect
-    .collection("event_cards")
+    .collection("artifact_cards")
     .find({})
     .toArray((err, result) => {
       if (err) throw err;
@@ -23,15 +21,15 @@ eventCardRoutes.route("/eventCards").get((req, res) => {
 });
 
 // This section will help you get a single record by id
-eventCardRoutes.route("/eventCards/:id").get((req, res) => {
+artifactCardRoutes.route("/artifactCards/:id").get((req, res) => {
   let db_connect = dbo.getDb("stored_data");
   let myquery = { _id: ObjectId(req.params.id) };
   db_connect
-    .collection("event_cards")
+    .collection("artifact_cards")
     .findOne(myquery, (err, result) => {
       if (err) throw err;
       res.json(result);
     });
 });
 
-module.exports = eventCardRoutes;
+module.exports = artifactCardRoutes;
