@@ -4,8 +4,8 @@
   "description": "",
   "engines": {
     "node": "18.12.1"
-    },
-    "license": "ISC",
+  },
+  "license": "ISC",
   "scripts": {
     "client": "cd client && yarn start",
     "start": "cd server && yarn start",
