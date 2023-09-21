@@ -1,0 +1,10 @@
+{
+    "buildCommand": "yarn build",
+    "outputDirectory": "client/build",
+    "rewrites": [
+        {
+            "src": "/(.*)",
+            "dest": "/server/server.js" 
+        }
+    ]
+}
