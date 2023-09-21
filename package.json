@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "engines": {
-    "node": "18.12"
+    "node": "18"
   },
   "license": "ISC",
   "scripts": {
