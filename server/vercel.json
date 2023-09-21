@@ -1,5 +1,5 @@
 {
-    "buildCommand": "yarn",
+    "version": 2,
     "builds": [
         {
             "src": "*.js",
