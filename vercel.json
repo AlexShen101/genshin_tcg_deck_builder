@@ -3,8 +3,8 @@
     "outputDirectory": "client/build",
     "rewrites": [
         {
-            "src": "/(.*)",
-            "dest": "/server/server.js" 
+            "source": "/(.*)",
+            "destination": "/server/server.js" 
         }
     ]
 }
