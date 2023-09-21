@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "engines": {
-    "node": "18.12.1"
+    "node": "18.12"
   },
   "license": "ISC",
   "scripts": {
@@ -12,6 +12,7 @@
     "build": "cd client && yarn install && yarn build && cd ../server && yarn install"
   },
   "dependencies": {
-    "concurrently": "^7.6.0"
+    "concurrently": "^7.6.0",
+    "yarn": "^1.22.19"
   }
 }
