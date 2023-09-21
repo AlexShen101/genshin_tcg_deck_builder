@@ -27,8 +27,6 @@ const App = () => {
     // runs only on first mount of App
     useEffect(() => {
         if (init) {
-            console.log("Attempting to log hostname")
-            console.log(process.env.REACT_APP_HOSTNAME)
             dispatch(getCards())
             init = false
         }
