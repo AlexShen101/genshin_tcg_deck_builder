@@ -28,16 +28,17 @@ app.use(require("./routes/FirebaseImageUrls.js"));
 
 app.get('/', (req, res) => {
   let db_connect = dbo.getDb("stored_data");
-  db_connect
-    .collection("artifact_cards")
-    .find({})
-    .toArray((err, result) => {
-      if (err) res.json({
-        error: err,
-        status: "artifact cards failed here"
-      });
-      res.json(result);
-    });
+  // db_connect
+  //   .collection("artifact_cards")
+  //   .find({})
+  //   .toArray((err, result) => {
+  //     if (err) res.json({
+  //       error: err,
+  //       status: "artifact cards failed here"
+  //     });
+  //     res.json(result);
+  //   });
+  res.json("test");
 })
 
 app.listen(port, () => {
