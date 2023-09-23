@@ -27,10 +27,19 @@ const App = () => {
     // runs only on first mount of App
     useEffect(() => {
         if (init) {
+            test()
             dispatch(getCards())
             init = false
         }
     }, [init])
+
+    const test = async () => {
+        console.log("App test")
+        const url = `${process.env.REACT_APP_BACKEND}/`
+        const response = await fetch(url)
+        const json = await response.json()
+        console.log(json)
+    }
 
     return (
         <BrowserRouter>
