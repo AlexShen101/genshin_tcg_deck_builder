@@ -27,17 +27,8 @@ app.use(require("./routes/WeaponCards.js"));
 app.use(require("./routes/FirebaseImageUrls.js"));
 
 app.get('/', (req, res) => {
-  let db_connect = dbo.getDb("stored_data");
-  // db_connect
-  //   .collection("artifact_cards")
-  //   .find({})
-  //   .toArray((err, result) => {
-  //     if (err) res.json({
-  //       error: err,
-  //       status: "artifact cards failed here"
-  //     });
-  //     res.json(result);
-  //   });
+  let db_connect = dbo.getDb();
+  // console.log(db_connect)
   res.json("test");
 })
 
