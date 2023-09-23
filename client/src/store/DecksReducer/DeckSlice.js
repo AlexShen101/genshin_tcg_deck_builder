@@ -54,7 +54,7 @@ const deckSlice = createSlice({
         setDecks: (state, action) => {
             state = action.payload
             localStorage.setItem('decks', JSON.stringify(state))
-            if (action.payload === []) {
+            if (action.payload == []) {
                 makeToastConfirmation('Successfully removed all decks')
             } else {
                 makeToastConfirmation('Successfully set decks')
