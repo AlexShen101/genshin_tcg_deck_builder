@@ -34,6 +34,17 @@ app.get('/', (req, res) => {
   res.json("Backend app is running")
 })
 
+app.get('artifactCards', (req, res) => {
+  let db_connect = dbo.getDb("stored_data");
+  db_connect
+    .collection("artifact_cards")
+    .find({})
+    .toArray((err, result) => {
+      if (err) throw err;
+      res.json(result);
+    });
+});
+
 // All other GET requests not handled before will return our React app
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
