@@ -15,7 +15,10 @@ artifactCardRoutes.route("/artifactCards").get((req, res) => {
     .collection("artifact_cards")
     .find({})
     .toArray((err, result) => {
-      if (err) throw err;
+      if (err) res.json({
+        error: err,
+        status: "artifact cards failed here"
+      });
       res.json(result);
     });
 });

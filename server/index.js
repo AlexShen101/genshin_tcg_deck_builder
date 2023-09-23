@@ -37,7 +37,7 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   // perform a database connection when server starts
   dbo.connectToServer(function (err) {
-    if (err) console.error(err); // something else here
+    if (err) res.json(err); // something else here
   });
   console.log(`Server is running on port: ${port}`);
 });
