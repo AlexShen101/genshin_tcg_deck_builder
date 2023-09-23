@@ -7,7 +7,7 @@ const summonRoutes = express.Router();
 const dbo = require("../db/conn");
 
 // This help convert the id from string to ObjectId for the _id.
-const ObjectId = require("mongodb").ObjectId;
+const ObjectId = require("mongodb-legacy").ObjectId;
 
 
 // This section will help you get a list of all the records.

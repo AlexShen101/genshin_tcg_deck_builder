@@ -9,8 +9,6 @@ const dbo = require("./db/conn.js");
 
 const port = process.env.PORT || 8080;
 
-console.log("Test log: managed to get to cors section")
-
 app.use(cors(
   {
         origin: ["*"],
@@ -18,9 +16,7 @@ app.use(cors(
 ));
 app.use(express.json());
 
-app.use(express.static(path.resolve(__dirname, '../client/build')));
-
-// app.use(require("./routes/ArtifactCards.js"));
+app.use(require("./routes/ArtifactCards.js"));
 app.use(require("./routes/CharacterCards.js"));
 app.use(require("./routes/EventCards.js"));
 app.use(require("./routes/Statuses.js"));
@@ -38,27 +34,10 @@ app.get('/', (req, res) => {
   res.json(msg)
 })
 
-app.get('/artifactCards', (req, res) => {
-  let db_connect = dbo.getDb("stored_data");
-  db_connect
-    .collection("artifact_cards")
-    .find({})
-    .toArray((err, result) => {
-      if (err) throw err;
-      res.json(result);
-    });
-});
-
-// All other GET requests not handled before will return our React app
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-});
-
 app.listen(port, () => {
-  console.log("Testing database connection")
   // perform a database connection when server starts
   dbo.connectToServer(function (err) {
-    if (err) console.error(err);
+    if (err) console.error(err); // something else here
   });
   console.log(`Server is running on port: ${port}`);
 });
