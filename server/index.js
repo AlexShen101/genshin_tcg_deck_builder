@@ -25,7 +25,6 @@ app.use(require("./routes/TalentCards.js"));
 app.use(require("./routes/WeaponCards.js"));
 app.use(require("./routes/FirebaseImageUrls.js"));
 
-console.log("right before dbo.connect to server");
 dbo.connectToServer((err) => {
   if (!err) {
     app.listen(port, () => {
@@ -36,13 +35,3 @@ dbo.connectToServer((err) => {
   }
 });
 
-app.get("/", (req, res) => {
-  let db_connect = dbo.getDb();
-  db_connect
-    .collection("character_cards")
-    .find({})
-    .toArray((err, result) => {
-      if (err) throw err;
-      res.json(result);
-    });
-});
