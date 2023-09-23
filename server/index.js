@@ -31,7 +31,11 @@ app.use(require("./routes/WeaponCards.js"));
 app.use(require("./routes/FirebaseImageUrls.js"));
 
 app.get('/', (req, res) => {
-  res.json("Backend app is running")
+  let msg = {
+    db: dbo,
+    port: port,
+  }
+  res.json(msg)
 })
 
 app.get('/artifactCards', (req, res) => {
