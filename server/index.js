@@ -1,19 +1,18 @@
-const path = require('path')
+const path = require("path");
 const express = require("express");
 const app = express();
 const cors = require("cors");
 require("dotenv").config({ path: "./config.env" });
 
 // get driver connection
-const dbo = require("./db/conn.js");
-
+const dbo = require("./db.js");
 const port = process.env.PORT || 8080;
 
-app.use(cors(
-  {
-        origin: ["*"],
-    }
-));
+app.use(
+  cors({
+    origin: ["*"],
+  })
+);
 app.use(express.json());
 
 app.use(require("./routes/ArtifactCards.js"));
@@ -26,15 +25,24 @@ app.use(require("./routes/TalentCards.js"));
 app.use(require("./routes/WeaponCards.js"));
 app.use(require("./routes/FirebaseImageUrls.js"));
 
-app.get('/', (req, res) => {
-  let db_connect = dbo.getDb();
-  res.json(db_connect);
-})
+console.log("right before dbo.connect to server");
+dbo.connectToServer((err) => {
+  if (!err) {
+    app.listen(port, () => {
+      // perform a database connection when server starts
+      console.log(`Server is running on port: ${port}`);
+    });
+  } else {
+  }
+});
 
-app.listen(port, () => {
-  // perform a database connection when server starts
-  dbo.connectToServer(function (err) {
-    if (err) console.log(err); // something else here
-  });
-  console.log(`Server is running on port: ${port}`);
+app.get("/", (req, res) => {
+  let db_connect = dbo.getDb();
+  db_connect
+    .collection("character_cards")
+    .find({})
+    .toArray((err, result) => {
+      if (err) throw err;
+      res.json(result);
+    });
 });

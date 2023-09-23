@@ -2,11 +2,10 @@ const express = require("express");
 const artifactCardRoutes = express.Router();
 
 // This will help us connect to the database
-const dbo = require("../db/conn");
+const dbo = require("../db");
 
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb-legacy").ObjectId;
-
 
 // This section will help you get a list of all the records.
 artifactCardRoutes.route("/artifactCards").get((req, res) => {
@@ -15,10 +14,11 @@ artifactCardRoutes.route("/artifactCards").get((req, res) => {
     .collection("artifact_cards")
     .find({})
     .toArray((err, result) => {
-      if (err) res.json({
-        error: err,
-        status: "artifact cards failed here"
-      });
+      if (err)
+        res.json({
+          error: err,
+          status: "artifact cards failed here",
+        });
       res.json(result);
     });
 });
@@ -27,12 +27,10 @@ artifactCardRoutes.route("/artifactCards").get((req, res) => {
 artifactCardRoutes.route("/artifactCards/:id").get((req, res) => {
   let db_connect = dbo.getDb("stored_data");
   let myquery = { _id: ObjectId(req.params.id) };
-  db_connect
-    .collection("artifact_cards")
-    .findOne(myquery, (err, result) => {
-      if (err) throw err;
-      res.json(result);
-    });
+  db_connect.collection("artifact_cards").findOne(myquery, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  });
 });
 
 module.exports = artifactCardRoutes;

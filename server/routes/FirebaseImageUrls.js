@@ -2,7 +2,7 @@ const express = require("express");
 const firebaseURlRoutes = express.Router();
 
 // This will help us connect to the database
-const dbo = require("../db/conn");
+const dbo = require("../db");
 
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb-legacy").ObjectId;
