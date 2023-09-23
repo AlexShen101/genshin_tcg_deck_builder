@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
   res.json("Backend app is running")
 })
 
-app.get('artifactCards', (req, res) => {
+app.get('/artifactCards', (req, res) => {
   let db_connect = dbo.getDb("stored_data");
   db_connect
     .collection("artifact_cards")
