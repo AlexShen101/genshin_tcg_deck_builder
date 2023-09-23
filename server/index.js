@@ -18,17 +18,17 @@ app.use(cors(
 ));
 app.use(express.json());
 
-// app.use(express.static(path.resolve(__dirname, '../client/build')));
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 
-// app.use(require("./routes/ArtifactCards.js"));
-// app.use(require("./routes/CharacterCards.js"));
-// app.use(require("./routes/EventCards.js"));
-// app.use(require("./routes/Statuses.js"));
-// app.use(require("./routes/Summons.js"));
-// app.use(require("./routes/SupportCards.js"));
-// app.use(require("./routes/TalentCards.js"));
-// app.use(require("./routes/WeaponCards.js"));
-// app.use(require("./routes/FirebaseImageUrls.js"));
+app.use(require("./routes/ArtifactCards.js"));
+app.use(require("./routes/CharacterCards.js"));
+app.use(require("./routes/EventCards.js"));
+app.use(require("./routes/Statuses.js"));
+app.use(require("./routes/Summons.js"));
+app.use(require("./routes/SupportCards.js"));
+app.use(require("./routes/TalentCards.js"));
+app.use(require("./routes/WeaponCards.js"));
+app.use(require("./routes/FirebaseImageUrls.js"));
 
 app.get('/', (req, res) => {
   res.json("Backend app is running")
