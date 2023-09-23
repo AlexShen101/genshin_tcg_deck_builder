@@ -20,7 +20,7 @@ app.use(express.json());
 
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
-app.use(require("./routes/ArtifactCards.js"));
+// app.use(require("./routes/ArtifactCards.js"));
 app.use(require("./routes/CharacterCards.js"));
 app.use(require("./routes/EventCards.js"));
 app.use(require("./routes/Statuses.js"));
