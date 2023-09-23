@@ -1,14 +1,5 @@
 {
     "version": 2,
-    "buildCommand": "yarn build",
-    "outputDirectory": "client/build",
-    "installCommand": "yarn install",
-    "builds": [
-        {
-            "src": "*.js",
-            "use": "@vercel/node"
-        }
-    ],
     "rewrites": [
         {
             "source": "/(.*)",
