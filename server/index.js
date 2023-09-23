@@ -28,8 +28,7 @@ app.use(require("./routes/FirebaseImageUrls.js"));
 
 app.get('/', (req, res) => {
   let db_connect = dbo.getDb();
-  // console.log(db_connect)
-  res.json("test");
+  res.json(db_connect);
 })
 
 app.listen(port, () => {
