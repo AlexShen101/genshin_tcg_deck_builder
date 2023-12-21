@@ -29,12 +29,12 @@ const fetchAllCards = async () => {
     let allCards = []
     // connect to backend for image urls
     const imageUrlsResponse = await fetch(
-        `${process.env.REACT_APP_BACKEND}/firebaseImageUrls`
+        `/firebaseImageUrls`
     )
 
     const imageUrls = await imageUrlsResponse.json()
     for (const cardType of cardsToFetch) {
-        const fetchUrl = `${process.env.REACT_APP_BACKEND}/${cardType}`
+        const fetchUrl = `/${cardType}`
         const response = await fetch(fetchUrl)
         const outputCards = await response.json()
         for (const card of outputCards) {
