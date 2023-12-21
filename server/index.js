@@ -22,6 +22,8 @@ app.use(
   })
 );
 
+app.get('/', (req, res) => res.send('Hello world!'));
+
 app.get("/*", function(req, res){
 
   res.sendFile(
