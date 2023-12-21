@@ -20,6 +20,16 @@ const buildPath = path.join(_dirname  , "../client/build");
 app.use(express.json());
 app.use(express.static(buildPath))
 
+app.use(require("./routes/ArtifactCards.js"));
+app.use(require("./routes/CharacterCards.js"));
+app.use(require("./routes/EventCards.js"));
+app.use(require("./routes/Statuses.js"));
+app.use(require("./routes/Summons.js"));
+app.use(require("./routes/SupportCards.js"));
+app.use(require("./routes/TalentCards.js"));
+app.use(require("./routes/WeaponCards.js"));
+app.use(require("./routes/FirebaseImageUrls.js"));
+
 app.get("/*", function(req, res){
 
   res.sendFile(
@@ -33,15 +43,6 @@ app.get("/*", function(req, res){
 
 })
 
-app.use(require("./routes/ArtifactCards.js"));
-app.use(require("./routes/CharacterCards.js"));
-app.use(require("./routes/EventCards.js"));
-app.use(require("./routes/Statuses.js"));
-app.use(require("./routes/Summons.js"));
-app.use(require("./routes/SupportCards.js"));
-app.use(require("./routes/TalentCards.js"));
-app.use(require("./routes/WeaponCards.js"));
-app.use(require("./routes/FirebaseImageUrls.js"));
 
 dbo.connectToServer((err) => {
   if (!err) {
