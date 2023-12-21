@@ -8,34 +8,12 @@ require("dotenv").config({ path: "./config.env" });
 const dbo = require("./db.js");
 const port = process.env.PORT || 8080;
 
-// test from tut
-const _dirname = path.dirname("");
-const buildPath = path.join(_dirname, "../client/build");
-
-app.use(express.static(buildPath)); // from tut
-
-app.use(express.json());
-
 app.use(
   cors({
     origin: "*",
   })
 );
-
-app.get('/', (req, res) => res.send('Hello world!'));
-
-app.get("/*", function(req, res){
-
-  res.sendFile(
-      path.join(__dirname, "../client/build/index.html"),
-      function (err) {
-        if (err) {
-          res.status(500).send(err);
-        }
-      }
-    );
-
-})
+app.use(express.json());
 
 app.use(require("./routes/ArtifactCards.js"));
 app.use(require("./routes/CharacterCards.js"));
